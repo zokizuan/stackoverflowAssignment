@@ -1,0 +1,104 @@
+.navbar-container{
+  position: fixed;  
+  width: 100%;
+  top: 0;
+  box-shadow: 0 1px 2px hsla(0,0%,0%,0.05),0 1px 4px hsla(0,0%,0%,0.05),0 2px 8px hsla(0,0%,0%,0.05);
+  z-index: 5050;
+  background-color: #f8f9f9;
+  height: 50px;
+  border-top:  3px solid #f48225;
+}
+.container {
+  max-width: 1264px;
+  min-width: auto;
+  height: 100%;
+  margin: 0 auto;
+  
+}
+.child-container{
+  align-items: center !important;
+  width: 100%;
+  display: flex !important;
+  height: 100% !important;
+}
+.child-container input{
+  -webkit-appearance: none;
+  width: 100%;
+  margin: 0;
+  padding: 7px 34px;
+  border: 1px solid hsl(210deg 8% 75%);
+  border-radius: 3px;
+  font-size: 13px;
+  font-family: inherit;
+  background-image: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="rgb(186,191,196)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>');
+  background-size: 22px;
+  background-repeat: no-repeat;
+  background-position: 8px center;
+  // background-size: 16px;
+}
+.searchInpuBar{
+  border-color: hsl(210,8%,75%);
+  background-color: #FFF;
+  box-shadow: none;
+  color: hsl(210,8%,25%);
+  padding-left: 32px;
+}
+.searchInpuBar:focus {
+  border-color: hsl(206deg 90% 70%) !important;
+  box-shadow: rgba(0, 116, 204, 0.15) 0px 0px 0px 4px;
+  outline: 0;
+}
+
+.logo-container {
+  height: 100%;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  margin-left: 10px;
+  margin-right: 20px;
+}
+.logo-container:hover {
+background-color: hsl(210,8%,90%);
+}
+.logo-container p {
+font-size: 24px;
+}
+.search-container {
+position: relative;
+width: 50% !important;
+}
+
+.search{
+  flex-shrink: 10000;
+  -webkit-transform: translate3d(0, 0, 0);
+  box-sizing: border-box;
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+  flex-grow: 1 !important;
+}
+#search-button{
+  display: none;
+}
+@media screen and (max-width: 768px) {
+  .logo-container {
+    display: none;
+  }
+  .search-container{
+    width: 100% !important;
+    display: flex;
+  }
+  #search-button{
+    display: block;
+    background-color: #f48225;
+    color: #FFF;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+  }
+  #search-button:active{
+    background-color: #f5740a;
+    
+  }
+}
