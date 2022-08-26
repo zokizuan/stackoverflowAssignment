@@ -9,11 +9,15 @@ import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { GlobalErrorHandler } from './core/error-handler/globa-error-handler';
 import { GlobalSpinnerInterceptor } from './interceptor/global-spinner.interceptor';
+import { SearchBarComponent } from './feature/search-bar/search-bar.component';
+import { QuestionsComponent } from './feature/questions/questions.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SearchBarComponent,
+    QuestionsComponent
   ],
   imports: [
     BrowserModule,
