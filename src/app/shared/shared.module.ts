@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SpinnerComponent } from './spinner/spinner.component';
-import { SidebarComponent } from './sidebar/sidebar.component';
+import { SidebarComponent } from '../feature/sidebar/sidebar.component';
 
 
 
@@ -12,6 +12,9 @@ import { SidebarComponent } from './sidebar/sidebar.component';
   ],
   imports: [
     CommonModule
+  ],
+  exports: [
+  SidebarComponent
   ]
 })
 export class SharedModule { }

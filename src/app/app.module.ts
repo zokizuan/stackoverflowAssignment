@@ -11,6 +11,7 @@ import { GlobalErrorHandler } from './core/error-handler/globa-error-handler';
 import { GlobalSpinnerInterceptor } from './interceptor/global-spinner.interceptor';
 import { SearchBarComponent } from './feature/search-bar/search-bar.component';
 import { QuestionsComponent } from './feature/questions/questions.component';
+import { SidebarComponent } from './feature/sidebar/sidebar.component';
 
 
 @NgModule({
