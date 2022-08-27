@@ -46,10 +46,10 @@ export class RootStateService extends StateService<RootState> {
     this.currentQuery$.subscribe(queries => this._currentQuery = queries);
     this.queriesObject$.subscribe(queries => this._queriesObject = queries);
     //Using debounceTime to prevent multiple requests when user is typing
-    this.searchTerm$.pipe(
+    /* this.searchTerm$.pipe(
       debounceTime(300),
       distinctUntilChanged()
-    ).subscribe((searchTerm)=>this.search(searchTerm))
+    ).subscribe((searchTerm)=>this.search(searchTerm)) */
   }
   private _searchTerm: string = this.state.searchState.searchTerm;
   rootState$: Observable<RootState> = this.select((state) => state);
