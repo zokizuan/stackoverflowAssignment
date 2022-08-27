@@ -1,20 +1,19 @@
 <div id="mainbar">
-    <div style="font-size: 27px; font-weight: 500; margin-bottom: 16px;"> Search Results </div>
-    <div class="caption">Results for gj</div>
-    <div class="total-result-container">
-      <div class="total-results"> 1,595 results </div>
-      <div class="split-button-group"><button type="button"
-        class="split-button split-button-active ">Votes</button><button type="button"
-        class="split-button">Views</button><button type="button"
-        class="split-button">Newest</button><button type="button"
-        class="split-button">Oldest</button></div>
-      </div>
-        <div class="searchResults">
-          <ng-container [ngTemplateOutlet]="singleResult"></ng-container>
-          <ng-container [ngTemplateOutlet]="singleResult"></ng-container>
-          <ng-container [ngTemplateOutlet]="singleResult"></ng-container>
-          <ng-container [ngTemplateOutlet]="singleResult"></ng-container>
-        </div>
+  <div style="font-size: 27px; font-weight: 500; margin-bottom: 16px;"> Search Results </div>
+  <div class="caption">Results for gj</div>
+  <div class="total-result-container">
+    <div class="total-results"> 1,595 results </div>
+    <div class="split-button-group"><button type="button"
+              class="split-button split-button-active ">Votes</button><button type="button"
+              class="split-button">Views</button><button type="button"
+              class="split-button">Newest</button><button type="button"
+              class="split-button">Oldest</button></div>
+  </div>
+  <div class="searchResults">
+    <ng-container *ngFor="let hero of test">
+      <ng-container [ngTemplateOutlet]="singleResult"></ng-container>
+    </ng-container>
+  </div>
 </div>
 <ng-template #singleResult>
   <div class="summary-container">
@@ -23,7 +22,8 @@
         <span style="font-weight: 500;"> 158 </span>
         <span> votes </span>
       </div>
-      <div class="answercountcontainer">
+      <div class="answercountcontainer accepted-Answers">
+        <svg aria-hidden="true" class="svg-icon iconCheckmarkSm" width="14" height="14" viewBox="0 0 14 14"><path d="M13 3.41 11.59 2 5 8.59 2.41 6 1 7.41l4 4 8-8Z"></path></svg>
         <span style="font-weight: 500;"> 0 </span>
         <span> answers </span>
       </div>

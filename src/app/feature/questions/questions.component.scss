@@ -77,7 +77,8 @@ a {
 
 .votecontainer,.answercountcontainer,.viewcountcontainer {
   display: inline-flex;
-  gap: 0.3em;
+  gap: 3px;
+  line-height: 17px;
   align-items: center;
   justify-content: center;
   white-space: nowrap;
@@ -255,4 +256,17 @@ a {
   margin-left: -24px;
   border-top: 1px solid #e3e6e8;
 
+}
+
+.accepted-Answers{
+  color: hsl(0,0%,100%);
+  background-color: hsl(140,40%,47%);
+  border-color: hsl(140,40%,47%);
+  // color: hsl(140,40%,40%);
+  border: 1px solid hsl(140,40%,40%);
+  border-radius: 3px;
+  padding: 2px 4px;
+}
+.svg-icon:not(.native) *{
+  fill: currentColor;
 }
