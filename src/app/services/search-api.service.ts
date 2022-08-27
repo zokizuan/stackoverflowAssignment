@@ -11,12 +11,12 @@ import { SearchResponse } from '../models/search.model';
 export class SearchApiService {
 
   constructor(private httpService: HttpClient) { }
-  getSearchResults(filters: string) {
+  getSearchResults(filters: string): Observable<SearchResponse> {
     const url = environment.apiURL + filters + environment.apiSite;
     console.log(url)
-    /* return this.httpService
+    return this.httpService
       .get<SearchResponse>(url)
-      .pipe(catchError(this.processError)); */
+      .pipe(catchError(this.processError));
   }
 //TODO : this wont work on custom error scinarios need to fix it
   private processError(err: any) {

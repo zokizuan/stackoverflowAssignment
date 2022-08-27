@@ -1,5 +1,5 @@
 import { Utility } from './../shared/utility';
-import { ApiFilters } from './../enums/api-filters.enum';
+import { QueryFilters } from '../enums/query-filters.enum';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { APICallState } from '../enums/api-call-state.enum';
@@ -19,7 +19,7 @@ export interface RootState {
   };
   apiCallState: APICallState;
 }
-const initialQueries: API_Query_Filters = Utility.enumToObject(ApiFilters) as unknown as API_Query_Filters;
+const initialQueries: API_Query_Filters = Utility.enumToObject(QueryFilters) as unknown as API_Query_Filters;
 const initialState: RootState = {
   searchState: {
     searchTerm: 'test',
@@ -67,12 +67,22 @@ export class RootStateService extends StateService<RootState> {
     this.searchQueryConstructor(this._searchTerm);
     this.PageAndPageSizeQueryConstructor('1', '2');
     this.resetQueriesObject();
-    this.searchApiService.getSearchResults(this.state.searchState.queryString)
+    this.searchApiService.getSearchResults(this.state.searchState.queryString).subscribe(
+      (response: SearchResponse) => {
+        this.setState({
+          searchState: {
+            ...this.state.searchState,
+            searchResponse: response
+          },
+          apiCallState: APICallState.LOADED
+        });
+      }
+    )
   }
 
   searchQueryConstructor(searchTerm: string) {
     this.setQueriesInState('query', searchTerm);
-    const constructedSearchQuery = '?' + ApiFilters.QUERY + this._queriesObject.query
+    const constructedSearchQuery = '?' + QueryFilters.QUERY + this._queriesObject.query
     this.setQueryStringInState(constructedSearchQuery)
   }
 
@@ -81,8 +91,8 @@ export class RootStateService extends StateService<RootState> {
     if (pageSize !== undefined) {
       this.setQueriesInState('pagesize', pageSize);
     }
-    const page = '&' + ApiFilters.PAGE + this._queriesObject.page
-    const pageSizeParam = this._queriesObject.pagesize !== '' ? '&' + ApiFilters.PAGESIZE + this._queriesObject.pagesize  : '';
+    const page = '&' + QueryFilters.PAGE + this._queriesObject.page
+    const pageSizeParam = this._queriesObject.pagesize !== '' ? '&' + QueryFilters.PAGESIZE + this._queriesObject.pagesize  : '';
     const constructedPageAndPageSizeQuery = `${page}${pageSizeParam}`;
     this.setQueryStringInState(this._currentQuery+constructedPageAndPageSizeQuery)
   }

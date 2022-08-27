@@ -1,4 +1,4 @@
-export enum ApiFilters {
+export enum QueryFilters {
   PAGE = 'page=',
   PAGESIZE = 'pagesize=',
   SORT = 'sort=',
