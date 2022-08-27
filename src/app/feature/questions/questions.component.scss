@@ -93,3 +93,102 @@
     display: none;
   }
 }
+
+
+
+.button-group_borderBottom {
+  padding-bottom: 12px;
+  border-bottom: 1px solid #d6d9dc;
+  margin-right: 5px;
+}
+.button-group_container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.button-group_borderBottom {
+  padding-bottom: 12px;
+  border-bottom: 1px solid #d6d9dc;
+  margin-right: 5px;
+}
+.button-group_container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.button-group_active, .button-group_active:hover {
+  background-color: #e4e6e8!important;
+}
+.button-group_active {
+  color: #3c4146!important;
+}
+.button-group_container button:not(:last-child) {
+  margin-right: -1px;
+}
+.button-group_container button:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.button-group_container button:not(:last-child) {
+  margin-right: -1px;
+}
+.button-group_container button:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.button-group_container button {
+  color: #6a737c;
+  border: 1px solid #6a737c;
+  border-radius: 3px;
+  padding: 0.8em;
+}
+.button_button {
+  background-color: transparent;
+  border-radius: 3px;
+  outline: none;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.15;
+  text-decoration: none;
+  cursor: pointer;
+  color: #848d95;
+  transition: 120ms;
+}
+.button-group_container button:not(:last-child):not(:first-child) {
+  border-radius: 0;
+}
+.button-group_container button:not(:last-child):not(:first-child) {
+  border-radius: 0;
+}
+.button-group_container button:not(:last-child) {
+  margin-right: -1px;
+}
+.button-group_container button:not(:last-child) {
+  margin-right: -1px;
+}
+.button-group_container button {
+  color: #6a737c;
+  border: 1px solid #6a737c;
+  border-radius: 3px;
+  padding: 0.8em;
+}
+.button-group_container button {
+  color: #6a737c;
+  border: 1px solid #6a737c;
+  border-radius: 3px;
+  padding: 0.8em;
+}
+.button_button {
+  background-color: transparent;
+  border-radius: 3px;
+  outline: none;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.15;
+  text-decoration: none;
+  cursor: pointer;
+  color: #848d95;
+  transition: 200ms;
+}
