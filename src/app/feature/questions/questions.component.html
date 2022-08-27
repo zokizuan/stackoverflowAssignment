@@ -1,53 +1,63 @@
 <div id="mainbar">
-    <div>
-      <p style="font-size: 27px; font-weight: 500;"> Search Results </p>
-    </div>
-    <div class="split-button-group"><button type="button"
-              class="split-button split-button-active ">Votes</button><button type="button"
-              class="split-button">Views</button><button type="button"
-              class="split-button">Newest</button><button type="button"
-              class="split-button">Oldest</button></div>
-    <div class="summary-container">
-      <div class="stats-container">
-        <div class="votecontainer">
-          <span style="font-weight: 500;"> 158 </span>
-          <span> votes  </span>
-         </div>
-        <div class="answercountcontainer">
-          <span style="font-weight: 500;"> 0 </span>
-          <span> answers  </span>
-        </div>
-        <div class="viewcountcontainer">
-          <span style="font-weight: 500;"> 2k </span>
-          <span> views  </span>
-        </div>
+    <div style="font-size: 27px; font-weight: 500; margin-bottom: 16px;"> Search Results </div>
+    <div class="caption">Results for gj</div>
+    <div class="total-result-container">
+      <div class="total-results"> 1,595 results </div>
+      <div class="split-button-group"><button type="button"
+        class="split-button split-button-active ">Votes</button><button type="button"
+        class="split-button">Views</button><button type="button"
+        class="split-button">Newest</button><button type="button"
+        class="split-button">Oldest</button></div>
       </div>
-      <div class="content-container">
-        <h3 class="content-tilte">
-          <a href="" class="s-link">Sneaking lenses and CPS past the value restriction</a>
-        </h3>
-        <div class="content-excerpt"> I'm encoding a form of van Laarhoven lenses in OCaml, but am
-          having difficulty due to the value restriction. The relevant code is as follows: module
-          Optic : sig type (-'s, +'t, +'a, -'b) t val I'm encoding a form of van Laarhoven lenses in
-          OCaml, but am having difficulty due to the value restriction. The relevant code is as
-          follows: module Optic : sig type (-'s, +'t, +'a, -'b) t val </div>
-        <div class="content-meta">
-          <div class="tags">
-            <div class="tag">ocaml</div>
-            <div class="tag">lenses</div>
+        <div class="searchResults">
+          <ng-container [ngTemplateOutlet]="singleResult"></ng-container>
+          <ng-container [ngTemplateOutlet]="singleResult"></ng-container>
+          <ng-container [ngTemplateOutlet]="singleResult"></ng-container>
+          <ng-container [ngTemplateOutlet]="singleResult"></ng-container>
+        </div>
+</div>
+<ng-template #singleResult>
+  <div class="summary-container">
+    <div class="stats-container">
+      <div class="votecontainer">
+        <span style="font-weight: 500;"> 158 </span>
+        <span> votes </span>
+      </div>
+      <div class="answercountcontainer">
+        <span style="font-weight: 500;"> 0 </span>
+        <span> answers </span>
+      </div>
+      <div class="viewcountcontainer">
+        <span style="font-weight: 500;"> 2k </span>
+        <span> views </span>
+      </div>
+    </div>
+    <div class="content-container">
+      <h3 class="content-tilte">
+        <a href="" class="s-link">Sneaking lenses and CPS past the value restriction</a>
+      </h3>
+      <div class="content-excerpt"> I'm encoding a form of van Laarhoven lenses in OCaml, but am
+        having difficulty due to the value restriction. The relevant code is as follows: module
+        Optic : sig type (-'s, +'t, +'a, -'b) t val I'm encoding a form of van Laarhoven lenses in
+        OCaml, but am having difficulty due to the value restriction. The relevant code is as
+        follows: module Optic : sig type (-'s, +'t, +'a, -'b) t val </div>
+      <div class="content-meta">
+        <div class="tags">
+          <div class="tag">ocaml</div>
+          <div class="tag">lenses</div>
+        </div>
+        <div class="user-card">
+          <div class="user-card-info">
+            <div class="user-card-info-link">
+              <a href="https://stackoverflow.com/users/" target="_blank"
+                 rel="noopener noreferrer">J. Abrahamson</a>
+            </div>
           </div>
-          <div class="user-card">
-            <div class="user-card-info">
-              <div class="user-card-info-link">
-                <a href="https://stackoverflow.com/users/" target="_blank"
-                   rel="noopener noreferrer">J. Abrahamson</a>
-              </div>
-            </div>
-            <div class="user-card-time"> asked <span style="text-decoration: none;">Mar 21, 2015 at
-                19:49</span>
-            </div>
+          <div class="user-card-time"> asked <span style="text-decoration: none;">Mar 21, 2015 at
+              19:49</span>
           </div>
         </div>
       </div>
     </div>
   </div>
+</ng-template>
