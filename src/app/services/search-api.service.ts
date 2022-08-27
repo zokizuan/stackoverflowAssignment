@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { SearchResponse } from '../models/search.model';
 
 @Injectable({
   providedIn: 'root' 
@@ -10,12 +11,12 @@ import { environment } from 'src/environments/environment';
 export class SearchApiService {
 
   constructor(private httpService: HttpClient) { }
-  getSearchResults(filters: string): Observable<SearchResponse[]> {
+  getSearchResults(filters: string) {
     const url = environment.apiURL + filters + environment.apiSite;
     console.log(url)
-    return this.httpService
-      .get<SearchResponse[]>(url)
-      .pipe(catchError(this.processError));
+    /* return this.httpService
+      .get<SearchResponse>(url)
+      .pipe(catchError(this.processError)); */
   }
 //TODO : this wont work on custom error scinarios need to fix it
   private processError(err: any) {

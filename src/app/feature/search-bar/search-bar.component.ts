@@ -1,4 +1,6 @@
+import { RootStateService } from './../../services/root-state.service';
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-search-bar',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SearchBarComponent implements OnInit {
 
-  constructor() { }
+
+  searchControl = new FormControl();
+  constructor(private rootStateService:RootStateService) { }
 
   ngOnInit(): void {
+    this.searchControl.valueChanges.pipe().subscribe(data => {
+      this.rootStateService.searchTerm = data;
+    });
   }
-
 }
