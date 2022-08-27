@@ -88,9 +88,10 @@ width: 50% !important;
   display: none;
 }
 @media screen and (max-width: 768px) {
-  .logo-container {
+  .logo-container,.personal-info {
     display: none;
   }
+  
   .search-box-container{
     width: 100% !important;
     display: flex;

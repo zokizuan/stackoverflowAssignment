@@ -10,7 +10,6 @@
   flex: 1 0 auto;
   text-align: left;
   height: 100%;
-  border-right: 1px solid rgb(214, 217, 220);
 
   & .layout-sidebar-container{
     position: sticky;
@@ -94,5 +93,6 @@
   .layout-sidebar {
     transform: translate(-100%);
     z-index: 999;
+    width: 0;
   }
 }

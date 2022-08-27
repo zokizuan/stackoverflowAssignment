@@ -12,7 +12,7 @@ a {
 }
 .summary-container {
   display: flex;
-  align-items: start;
+  align-items: flex-start;
   padding: 16px;
   overflow: hidden;
   border-bottom: 1px solid #e3e6e8;
@@ -175,6 +175,11 @@ a {
   border-color: transparent;
 }
 
+@media screen and (max-width: 425px) {
+  .total-results{
+    padding-bottom: 8px;
+  }
+}
 @media screen and (max-width: 980px) {
   #mainbar {
     width: 100%;
@@ -202,7 +207,6 @@ a {
   outline: none;
   font-family: inherit;
   font-size: 13px;
-  font-weight: 400;
   line-height: 1.15;
   text-decoration: none;
   cursor: pointer;
@@ -225,9 +229,7 @@ a {
 
 .split-button-group {
   display: flex;
-  flex-wrap: wrap;
   justify-content: flex-end;
-  padding-bottom: 12px;
   margin-right: 5px;
 }
 
@@ -244,8 +246,9 @@ a {
 }
 .total-result-container{
   display: flex;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
   align-items: center;
+  flex-wrap: wrap;
 }
 .total-results{
   flex: 1 auto !important;
