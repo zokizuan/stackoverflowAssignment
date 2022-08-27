@@ -8,7 +8,8 @@ import { SearchApiService } from 'src/app/services/search-api.service';
   styleUrls: ['./questions.component.scss']
 })
 export class QuestionsComponent implements OnInit {
-  constructor(private rootStateService:RootStateService, private searchApiService:SearchApiService) { }
+  constructor(private rootStateService: RootStateService, private searchApiService: SearchApiService) { }
+  data = this.searchApiService.getStaticDataForDevelopment();
   ngOnInit(): void {
     this.rootStateService.searchResponse$.subscribe(data => {
       // console.log(data)
