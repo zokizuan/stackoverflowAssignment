@@ -21,6 +21,7 @@ interface Results {
   title: string;
   accepted_answer_id?: number;
   protected_date?: number;
+  body: string;
 }
 
 interface Owner {

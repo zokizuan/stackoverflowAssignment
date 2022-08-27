@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   apiURL: 'https://api.stackexchange.com/2.3/search/advanced',
-  apiSite:'&site=stackoverflow'
-
+  apiSite:'&site=stackoverflow',
+  apiWithBody: '&filter=!nKzQUR3Egv'
 };
 
 /*

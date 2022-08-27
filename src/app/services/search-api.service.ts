@@ -12,7 +12,7 @@ export class SearchApiService {
 
   constructor(private httpService: HttpClient) { }
   getSearchResults(filters: string): Observable<SearchResponse> {
-    const url = environment.apiURL + filters + environment.apiSite;
+    const url = environment.apiURL + filters + environment.apiSite + environment.apiWithBody;
     console.log(url)
     return this.httpService
       .get<SearchResponse>(url)
