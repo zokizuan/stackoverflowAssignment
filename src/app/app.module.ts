@@ -12,13 +12,15 @@ import { GlobalSpinnerInterceptor } from './interceptor/global-spinner.intercept
 import { SearchBarComponent } from './feature/search-bar/search-bar.component';
 import { QuestionsComponent } from './feature/questions/questions.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { QuestionComponent } from './feature/questions/question/question.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     SearchBarComponent,
-    QuestionsComponent
+    QuestionsComponent,
+    QuestionComponent
   ],
   imports: [
     BrowserModule,

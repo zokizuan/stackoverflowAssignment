@@ -1,0 +1,49 @@
+<ng-container>
+  <div class="summary-container">
+    <div class="stats-container">
+      <div class="votecontainer">
+        <span style="font-weight: 500;"> {{props.up_vote_count}} </span>
+        <span> votes </span>
+      </div>
+      <div class="answercountcontainer" [ngClass]="props.answer_count > 0 ? 'accepted-Answers':''">
+        <svg *ngIf="props.answer_count > 0" aria-hidden="true" class="svg-icon iconCheckmarkSm"
+             width="14" height="14" viewBox="0 0 14 14">
+          <path d="M13 3.41 11.59 2 5 8.59 2.41 6 1 7.41l4 4 8-8Z"></path>
+        </svg>
+        <span style="font-weight: 500;"> {{props.answer_count}} </span>
+        <span> answers </span>
+      </div>
+      <div class="viewcountcontainer">
+        <span style="font-weight: 500;"> {{props.view_count}} </span>
+        <span> views </span>
+      </div>
+    </div>
+    <div class="content-container">
+      <h3 class="content-tilte">
+        <a href="" [innerHTML]="props.title" class="s-link"></a>
+      </h3>
+      <div class="content-excerpt" [innerHtml]="props.body_markdown | markdown">  </div>
+      <div class="content-meta">
+        <div *ngFor="let tag of props.tags" class="tags">
+          <div class="tag">{{tag}}</div>
+          <div class="tag">{{tag}}</div>
+        </div>
+        <div class="user-card">
+          <div class="user-card-info">
+            <a href="{{props.owner.link}}" class="avatar">
+              <div class="gravatar-wrapper">
+                <img src="{{props.owner.profile_image}}" width="16" height="16" class="avatar-image">
+              </div>
+            </a>
+            <div class="user-card-info-link">
+              <a href="{{props.owner.link}}" target="_blank"
+                 rel="noopener noreferrer">{{props.owner.display_name}}</a>
+            </div>
+          </div>
+          <div class="user-card-time"> asked <span style="text-decoration: none;">{{props.creation_date  * 1000  | date:'medium'}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
