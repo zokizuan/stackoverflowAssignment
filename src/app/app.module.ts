@@ -13,6 +13,9 @@ import { SearchBarComponent } from './feature/search-bar/search-bar.component';
 import { QuestionsComponent } from './feature/questions/questions.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { QuestionComponent } from './feature/questions/question/question.component';
+import { HomeComponent } from './feature/home/home.component';
+import { SidebarComponent } from './feature/sidebar/sidebar.component';
+import { CommonModule } from '@angular/common';
 
 
 @NgModule({
@@ -20,13 +23,16 @@ import { QuestionComponent } from './feature/questions/question/question.compone
     AppComponent,
     SearchBarComponent,
     QuestionsComponent,
-    QuestionComponent
+    QuestionComponent,
+    HomeComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
+    CommonModule,
     SharedModule,
     CoreModule,
     FormsModule,

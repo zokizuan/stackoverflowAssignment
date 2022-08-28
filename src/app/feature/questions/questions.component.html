@@ -1,17 +1,36 @@
 <div id="mainbar">
-  <div style="font-size: 27px; font-weight: 500; margin-bottom: 16px;"> Search Results </div>
+  <!-- For simplicity Creating Component was not required with current requirement -->
+  <ng-container *ngIf="(view$ | async) === 'home'">
+    <ng-container *ngTemplateOutlet="heading; context:{ $implicit:'Top Questions'} "></ng-container>
+  </ng-container>
+  <ng-container *ngIf="(view$ | async) === 'search'">
+    <ng-container *ngTemplateOutlet="search; context:{ $implicit: (view$ | async)}"></ng-container>
+  </ng-container>
+  <ng-container *ngIf="(view$ | async) === 'questions'">
+    <ng-container *ngTemplateOutlet="heading; context:{ $implicit:'All Questions'} "></ng-container>
+
+  </ng-container>
+  
+  <div class="results-container">
+    <ng-container *ngFor="let hero of testting;index as i">
+      <app-question [props]="hero"></app-question>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #search let-view>
+    <div style="font-size: 27px; font-weight: 500; margin-bottom: 16px;"> Top Questions </div>
   <div class="caption">Results for gj</div>
   <div class="total-result-container">
-    <div *ngIf="test" class="total-results"> {{test | number}} results </div>
+    <div class="total-results"> {{test | number}} results </div>
+    <div class="total-results"> {{test | number}} results </div>
     <div class="split-button-group"><button type="button"
               class="split-button split-button-active ">Votes</button><button type="button"
               class="split-button">Views</button><button type="button"
               class="split-button">Newest</button><button type="button"
               class="split-button">Oldest</button></div>
   </div>
-  <div class="searchResults">
-    <ng-container *ngFor="let hero of testting;index as i">
-     <app-question [props]="hero"></app-question>
-    </ng-container>
-  </div>
-</div>
+</ng-template>
+<ng-template #heading let-heading>
+  <div style="font-size: 27px; font-weight: 500; margin-bottom: 16px;"> {{heading}} </div>
+</ng-template>
