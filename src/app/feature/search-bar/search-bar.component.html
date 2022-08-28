@@ -2,21 +2,19 @@
   <div class="searchbar-container">
     <div class="child-container">
       <div routerLink="" class="logo-container">
-        <img height="100%" src="https://assets1.cleartax-cdn.com/cleartax/images/1661541044_imageedit_1_5407104128.webp" alt="logo">
+        <img height="100%"
+             src="https://assets1.cleartax-cdn.com/cleartax/images/1661541044_imageedit_1_5407104128.webp"
+             alt="logo">
       </div>
       <span class="personal-info"> Made by <span style="color: #ff7b00;">Hamza</span></span>
       <div class="search-box-container">
         <div class="search">
-          <input type="text" autocomplete="off" [formControl]="searchControl" class="searchInpuBar" placeholder="Search">
+          <form [formGroup]="searchBarGroup" (ngSubmit)="onSubmit()">
+            <input type="text" autocomplete="off" [formControl]="searchControl"
+                   class="searchInpuBar" placeholder="Search">
+          </form>
         </div>
       </div>
     </div>
-    <!--
-    <div class="search-container">
-      <span class="p-input-icon-left ">
-        <i class="pi pi-search"></i>
-        <input type="text"(keyup.Enter)="searchResults(searchValue); displaySearch()" class="searchbar" placeholder="Search" [(ngModel)]="searchValue">
-      </span>
-    </div> -->
   </div>
 </div>

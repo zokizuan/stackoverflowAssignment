@@ -18,9 +18,6 @@ export class SearchApiService {
       .get<SearchResponse>(url)
       .pipe(catchError(this.processError));
   }
-  getStaticDataForDevelopment(): Observable<SearchResponse> {
-    return this.httpService.get<SearchResponse>('assets/db.json');    
-  }
 //TODO : this wont work on custom error scinarios need to fix it
   private processError(err: any) {
     let message = '';

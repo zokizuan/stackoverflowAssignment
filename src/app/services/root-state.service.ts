@@ -25,7 +25,7 @@ const initialQueries: API_Query_Filters = Utility.enumToObject(QueryFilters) as 
 
 const initialState: RootState = {
   searchState: {
-    searchTerm: 'test',
+    searchTerm: '',
     searchResponse: {
       items: [],
       has_more: false,
@@ -45,7 +45,7 @@ const initialState: RootState = {
   providedIn: 'root'
 })
 export class RootStateService extends StateService<RootState> {
-  constructor(private searchApiService: SearchApiService,private router: Router) {
+  constructor(private searchApiService: SearchApiService, private router: Router) {
     super(initialState);
     console.log(this._searchTerm)
     //set private variable currentQuery to the current query in the state
@@ -53,11 +53,15 @@ export class RootStateService extends StateService<RootState> {
     this.queriesObject$.subscribe(queries => this._queriesObject = queries);
     //Using debounceTime to prevent multiple requests when user is typing
     this.searchTerm$.pipe(
-      debounceTime(300),
       distinctUntilChanged()
     ).subscribe((searchTerm) => {
-      this.router.navigate(['/search']),
-      this.search(searchTerm)
+      if (searchTerm !== '') {
+        this.router.navigate(['/search']),
+        this.search(searchTerm)
+      }
+      else {
+        console.log('searchTerm is empty')
+      }
     })
   }
 
@@ -77,9 +81,9 @@ export class RootStateService extends StateService<RootState> {
 
   search(searchTerm: string) {
     this.setState({ apiCallState: APICallState.LOADING });
-    this.searchQueryConstructor(this._searchTerm);
-    this.PageAndPageSizeQueryConstructor('1', '2');
     this.resetQueriesObject();
+    this.searchQueryConstructor(this._searchTerm);
+    // this.PageAndPageSizeQueryConstructor('1', '2');
     this.searchApiService.getSearchResults(this.state.searchState.queryString).subscribe(
       (response: SearchResponse) => {
         this.setState({

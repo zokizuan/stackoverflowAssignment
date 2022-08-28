@@ -14,24 +14,19 @@ import { SearchApiService } from 'src/app/services/search-api.service';
 export class QuestionsComponent implements OnInit {
   test!:number;
   testting!: Results[];
+  searchTerm = this.rootStateService.searchTerm$;
   view$: Observable<string> = this.route.data.pipe(map(dataFromRouter => dataFromRouter?.['view']));
 
   constructor(private rootStateService: RootStateService, private searchApiService: SearchApiService,private route:ActivatedRoute) { }
-  data = this.searchApiService.getStaticDataForDevelopment();
   ngOnInit(): void {
     this.view$.subscribe(data => {
       console.log(data)
     })
     this.rootStateService.searchResponse$.subscribe(data => {
-      // console.log(data)
+      this.testting = data.items;
+      this.test = data.total
+      console.log(data)
     })
-    this.searchApiService.getStaticDataForDevelopment().subscribe(
-      (data) => {
-        this.test = data.total
-        this.testting = data.items
-        console.log(data)
-      }
-    )
   }
 
 }
