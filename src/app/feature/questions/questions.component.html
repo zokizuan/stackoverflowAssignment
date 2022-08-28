@@ -1,4 +1,5 @@
 <div id="mainbar">
+  <app-spinner></app-spinner>
   <!-- For simplicity Creating Component was not required with current requirement -->
   <ng-container *ngIf="(view$ | async) === 'home'">
     <ng-container *ngTemplateOutlet="heading; context:{ $implicit:'Top Questions'} "></ng-container>

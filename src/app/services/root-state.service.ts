@@ -1,7 +1,7 @@
 import { Utility } from './../shared/utility';
 import { QueryFilters } from '../enums/query-filters.enum';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { delay, Observable } from 'rxjs';
 import { APICallState } from '../enums/api-call-state.enum';
 import { SearchResponse } from '../models/search.model';
 import { StateService } from '../store/global.store';

@@ -13,7 +13,8 @@ import { HtmlToPlaintextPipe } from './pipe/plaintext.pipe';
     CommonModule,
   ],
   exports: [
-    HtmlToPlaintextPipe
+    HtmlToPlaintextPipe,
+    SpinnerComponent
   ]
 })
 export class SharedModule { }
