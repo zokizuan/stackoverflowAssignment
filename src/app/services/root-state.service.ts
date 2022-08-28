@@ -8,6 +8,7 @@ import { StateService } from '../store/global.store';
 import { SearchApiService } from './search-api.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { API_Query_Filters } from '../models/api-filters.model';
+import { Router } from '@angular/router';
 
 
 export interface RootState {
@@ -19,7 +20,9 @@ export interface RootState {
   };
   apiCallState: APICallState;
 }
+//Change Enum QueryFilter to generate Filters Object which whill hold the Values for Api Call
 const initialQueries: API_Query_Filters = Utility.enumToObject(QueryFilters) as unknown as API_Query_Filters;
+
 const initialState: RootState = {
   searchState: {
     searchTerm: 'test',
@@ -42,19 +45,28 @@ const initialState: RootState = {
   providedIn: 'root'
 })
 export class RootStateService extends StateService<RootState> {
-  constructor(private searchApiService: SearchApiService) {
+  constructor(private searchApiService: SearchApiService,private router: Router) {
     super(initialState);
     console.log(this._searchTerm)
     //set private variable currentQuery to the current query in the state
     this.currentQuery$.subscribe(queries => this._currentQuery = queries);
     this.queriesObject$.subscribe(queries => this._queriesObject = queries);
     //Using debounceTime to prevent multiple requests when user is typing
-    /* this.searchTerm$.pipe(
+    this.searchTerm$.pipe(
       debounceTime(300),
       distinctUntilChanged()
-    ).subscribe((searchTerm)=>this.search(searchTerm)) */
+    ).subscribe((searchTerm) => {
+      this.router.navigate(['/search']),
+      this.search(searchTerm)
+    })
   }
+
+
+  private _currentQuery!: string;
+  private _queriesObject!: API_Query_Filters;
   private _searchTerm: string = this.state.searchState.searchTerm;
+
+  //Observables
   rootState$: Observable<RootState> = this.select((state) => state);
   searchResponse$: Observable<SearchResponse> = this.select((state) => state.searchState.searchResponse);
   searchTerm$: Observable<string> = this.select((state) => state.searchState.searchTerm);
@@ -62,10 +74,8 @@ export class RootStateService extends StateService<RootState> {
   queriesObject$: Observable<API_Query_Filters> = this.select((state) => state.searchState.queries);
   apiCallState$: Observable<APICallState> = this.select((state) => state.apiCallState);
 
-  private _currentQuery!: string;
-  private _queriesObject!: API_Query_Filters;
 
-  search(searchTerm:string) {
+  search(searchTerm: string) {
     this.setState({ apiCallState: APICallState.LOADING });
     this.searchQueryConstructor(this._searchTerm);
     this.PageAndPageSizeQueryConstructor('1', '2');
@@ -95,9 +105,9 @@ export class RootStateService extends StateService<RootState> {
       this.setQueriesInState('pagesize', pageSize);
     }
     const page = '&' + QueryFilters.PAGE + this._queriesObject.page
-    const pageSizeParam = this._queriesObject.pagesize !== '' ? '&' + QueryFilters.PAGESIZE + this._queriesObject.pagesize  : '';
+    const pageSizeParam = this._queriesObject.pagesize !== '' ? '&' + QueryFilters.PAGESIZE + this._queriesObject.pagesize : '';
     const constructedPageAndPageSizeQuery = `${page}${pageSizeParam}`;
-    this.setQueryStringInState(this._currentQuery+constructedPageAndPageSizeQuery)
+    this.setQueryStringInState(this._currentQuery + constructedPageAndPageSizeQuery)
   }
 
   setQueriesInState(key: keyof API_Query_Filters, value: string) {
@@ -118,7 +128,7 @@ export class RootStateService extends StateService<RootState> {
       ...this.state,
       searchState: {
         ...this.state.searchState,
-        queryString: queryString        
+        queryString: queryString
       }
     })
   }
