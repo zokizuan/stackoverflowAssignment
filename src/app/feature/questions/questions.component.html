@@ -21,9 +21,9 @@
 
 <ng-template #search let-view>
     <div style="font-size: 27px; font-weight: 500; margin-bottom: 16px;"> Search Results </div>
-  <div class="caption">Results for {{searchTerm | async}}</div>
+  <div *ngIf="searchTerm | async" class="caption">Results for {{searchTerm | async}}</div>
   <div class="total-result-container">
-    <div class="total-results"> {{test | number}} results </div>
+    <div *ngIf="searchTerm | async" class="total-results"> {{test | number}} results </div>
     <div class="split-button-group"><button type="button"
               class="split-button split-button-active ">Votes</button><button type="button"
               class="split-button">Views</button><button type="button"
