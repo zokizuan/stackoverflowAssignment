@@ -22,7 +22,7 @@
       <h3 class="content-tilte">
         <a href="" [innerHTML]="props.title" class="s-link"></a>
       </h3>
-      <div class="content-excerpt" [innerHtml]="props.body_markdown | markdown">  </div>
+      <div class="content-excerpt" [innerHtml]="props.body | htmlToPlaintext">  </div>
       <div class="content-meta">
         <div *ngFor="let tag of props.tags" class="tags">
           <div class="tag">{{tag}}</div>

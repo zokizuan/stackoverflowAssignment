@@ -2,21 +2,21 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { SidebarComponent } from '../feature/sidebar/sidebar.component';
-import { MarkdownPipe } from './pipe/markdown.pipe';
+import { HtmlToPlaintextPipe } from './pipe/markdown.pipe';
 
 
 @NgModule({
   declarations: [
     SpinnerComponent,
     SidebarComponent,
-    MarkdownPipe
+    HtmlToPlaintextPipe
   ],
   imports: [
     CommonModule,
   ],
   exports: [
     SidebarComponent,
-    MarkdownPipe
+    HtmlToPlaintextPipe
   ]
 })
 export class SharedModule { }
