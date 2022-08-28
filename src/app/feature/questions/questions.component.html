@@ -2,7 +2,7 @@
   <div style="font-size: 27px; font-weight: 500; margin-bottom: 16px;"> Search Results </div>
   <div class="caption">Results for gj</div>
   <div class="total-result-container">
-    <div class="total-results"> 1,595 results </div>
+    <div *ngIf="test" class="total-results"> {{test | number}} results </div>
     <div class="split-button-group"><button type="button"
               class="split-button split-button-active ">Votes</button><button type="button"
               class="split-button">Views</button><button type="button"
@@ -10,7 +10,7 @@
               class="split-button">Oldest</button></div>
   </div>
   <div class="searchResults">
-    <ng-container *ngFor="let hero of test;index as i">
+    <ng-container *ngFor="let hero of testting;index as i">
      <app-question [props]="hero"></app-question>
     </ng-container>
   </div>

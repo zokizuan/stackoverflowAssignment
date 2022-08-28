@@ -3,28 +3,34 @@ export interface SearchResponse {
   has_more: boolean;
   quota_max: number;
   quota_remaining: number;
+  page: number;
+  page_size: number;
+  total: number;
 }
 
-interface Results {
+export interface Results {
   tags: string[];
   owner: Owner;
   is_answered: boolean;
   view_count: number;
+  up_vote_count: number;
   answer_count: number;
   score: number;
   last_activity_date: number;
   creation_date: number;
-  last_edit_date?: number;
   question_id: number;
-  content_license: string;
   link: string;
   title: string;
-  accepted_answer_id?: number;
-  protected_date?: number;
   body: string;
+  accepted_answer_id?: number;
+  last_edit_date?: number;
+  closed_date?: number;
+  closed_reason?: string;
+  bounty_amount?: number;
+  bounty_closes_date?: number;
 }
 
-interface Owner {
+export interface Owner {
   account_id: number;
   reputation: number;
   user_id: number;

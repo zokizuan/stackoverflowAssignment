@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Results } from 'src/app/models/search.model';
 
 @Component({
   selector: 'app-question',
@@ -7,12 +8,12 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class QuestionComponent implements OnInit {
 
-  @Input() props:any = '';
+  @Input()
+  props!: Results;
 
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.props)
   }
 
 }

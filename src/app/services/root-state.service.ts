@@ -27,7 +27,10 @@ const initialState: RootState = {
       items: [],
       has_more: false,
       quota_max: 0,
-      quota_remaining: 0
+      quota_remaining: 0,
+      page: 0,
+      page_size: 0,
+      total: 0
     },
     queryString: '',
     queries: initialQueries

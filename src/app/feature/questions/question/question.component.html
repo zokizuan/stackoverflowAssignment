@@ -3,7 +3,7 @@
     <div class="stats-container">
       <div class="votecontainer">
         <span style="font-weight: 500;"> {{props.up_vote_count}} </span>
-        <span> votes </span>
+        <span> {{props.up_vote_count === 1 || props.up_vote_count === 0 ? 'vote' : 'votes'}} </span>
       </div>
       <div class="answercountcontainer" [ngClass]="props.answer_count > 0 ? 'accepted-Answers':''">
         <svg *ngIf="props.answer_count > 0" aria-hidden="true" class="svg-icon iconCheckmarkSm"
