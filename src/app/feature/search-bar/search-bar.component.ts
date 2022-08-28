@@ -8,6 +8,7 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./search-bar.component.scss']
 })
 export class SearchBarComponent implements OnInit {
+  filterPopup = false;
   searchControl = new FormControl();
   searchBarGroup = new FormGroup({SearchBar:this.searchControl});
   constructor(private rootStateService:RootStateService) { }
@@ -16,5 +17,6 @@ export class SearchBarComponent implements OnInit {
     this.rootStateService.searchTerm = this.searchControl.value;
   }
   ngOnInit(): void {
+    console.log(this.filterPopup)
   }
 }
