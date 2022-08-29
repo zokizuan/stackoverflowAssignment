@@ -2,8 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { HtmlToPlaintextPipe } from './pipe/plaintext.pipe';
+import {NgxPaginationModule} from 'ngx-pagination';
 
-
+const module = [
+  NgxPaginationModule,
+]
 @NgModule({
   declarations: [
     SpinnerComponent,
@@ -11,10 +14,12 @@ import { HtmlToPlaintextPipe } from './pipe/plaintext.pipe';
   ],
   imports: [
     CommonModule,
+    ...module
   ],
   exports: [
     HtmlToPlaintextPipe,
-    SpinnerComponent
+    SpinnerComponent,
+    ...module
   ]
 })
 export class SharedModule { }

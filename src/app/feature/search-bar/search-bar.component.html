@@ -13,7 +13,7 @@
             <input type="text" autocomplete="off" [formControl]="searchControl" (focus)="filterPopup = true" (blur)="filterPopup = false"
                    class="searchInpuBar" style="position: relative;" placeholder="Search">
                   </form>
-                  <div *ngIf="filterPopup" #test class="list">
+                  <div *ngIf="filterPopup" class="list">
                    <div class="filter-type-container">
                      <div class="flex--item">
                          <div class="mb12">

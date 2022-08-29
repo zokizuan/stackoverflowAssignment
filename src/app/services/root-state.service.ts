@@ -6,7 +6,7 @@ import { APICallState } from '../enums/api-call-state.enum';
 import { SearchResponse } from '../models/search.model';
 import { StateService } from '../store/global.store';
 import { SearchApiService } from './search-api.service';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs';
 import { API_Query_Filters } from '../models/api-filters.model';
 import { Router } from '@angular/router';
 
@@ -15,17 +15,17 @@ export interface RootState {
   searchState: {
     searchTerm: string;
     searchResponse: SearchResponse;
-    queryString: string;
-    queries: API_Query_Filters;
+    queryString: URLSearchParams;
+    // queries: API_Query_Filters;
   };
   apiCallState: APICallState;
 }
 //Change Enum QueryFilter to generate Filters Object which whill hold the Values for Api Call
-const initialQueries: API_Query_Filters = Utility.enumToObject(QueryFilters) as unknown as API_Query_Filters;
+// const initialQueries: API_Query_Filters = Utility.enumToObject(QueryFilters) as unknown as API_Query_Filters;
 
 const initialState: RootState = {
   searchState: {
-    searchTerm: '',
+    searchTerm: 'test',
     searchResponse: {
       items: [],
       has_more: false,
@@ -35,8 +35,8 @@ const initialState: RootState = {
       page_size: 0,
       total: 0
     },
-    queryString: '',
-    queries: initialQueries
+    queryString: (new URLSearchParams()),
+    // queries: initialQueries
   },
   apiCallState: APICallState.NOTLOADED,
 };
@@ -47,109 +47,69 @@ const initialState: RootState = {
 export class RootStateService extends StateService<RootState> {
   constructor(private searchApiService: SearchApiService, private router: Router) {
     super(initialState);
-    console.log(this._searchTerm)
-    //set private variable currentQuery to the current query in the state
-    this.currentQuery$.subscribe(queries => this._currentQuery = queries);
-    this.queriesObject$.subscribe(queries => this._queriesObject = queries);
     //Using debounceTime to prevent multiple requests when user is typing
     this.searchTerm$.pipe(
-      distinctUntilChanged()
-    ).subscribe((searchTerm) => {
-      if (searchTerm !== '') {
-        this.router.navigate(['/search']),
-        this.search(searchTerm)
-      }
-      else {
-        console.log('searchTerm is empty')
-      }
-    })
+      distinctUntilChanged())
+      .subscribe((searchTerm) => {
+        if (searchTerm !== '') {
+          this.router.navigate(['/search']),
+            this.search(searchTerm)
+        }
+        else {
+          console.log('searchTerm is empty')
+        }
+      })
   }
 
-
-  private _currentQuery!: string;
-  private _queriesObject!: API_Query_Filters;
   private _searchTerm: string = this.state.searchState.searchTerm;
 
   //Observables
   rootState$: Observable<RootState> = this.select((state) => state);
   searchResponse$: Observable<SearchResponse> = this.select((state) => state.searchState.searchResponse);
   searchTerm$: Observable<string> = this.select((state) => state.searchState.searchTerm);
-  currentQuery$: Observable<string> = this.select((state) => state.searchState.queryString);
-  queriesObject$: Observable<API_Query_Filters> = this.select((state) => state.searchState.queries);
+  currentQuery$: Observable<URLSearchParams> = this.select((state) => state.searchState.queryString);
   apiCallState$: Observable<APICallState> = this.select((state) => state.apiCallState);
 
 
   search(searchTerm: string) {
     this.setState({ apiCallState: APICallState.LOADING });
-    this.resetQueriesObject();
-    this.searchQueryConstructor(this._searchTerm);
-    // this.PageAndPageSizeQueryConstructor('1', '2');
-    this.searchApiService.getSearchResults(this.state.searchState.queryString).subscribe(
+    this.QueryConstructor(QueryFilters.QUERY, this._searchTerm);
+    this.searchApiService.getSearchResults(this.state.searchState.queryString.toString()).subscribe(
       (response: SearchResponse) => {
-        this.setState({
-          searchState: {
-            ...this.state.searchState,
-            searchResponse: response
-          },
-          apiCallState: APICallState.LOADED
-        });
-      }
-    )
+        this.setSearchResponseInState(response)
+      })
   }
 
-  searchQueryConstructor(searchTerm: string) {
-    this.setQueriesInState('query', searchTerm);
-    const constructedSearchQuery = '?' + QueryFilters.QUERY + this._queriesObject.query
-    this.setQueryStringInState(constructedSearchQuery)
-  }
-
-  PageAndPageSizeQueryConstructor(pageNumber: string, pageSize?: string) {
-    this.setQueriesInState('page', pageNumber);
+  getPageAndPageSize(pageNumber: number, pageSize?: number) {
+    this.QueryConstructor(QueryFilters.PAGE, pageNumber.toString());
     if (pageSize !== undefined) {
-      this.setQueriesInState('pagesize', pageSize);
+      this.QueryConstructor(QueryFilters.PAGESIZE, pageSize.toString());
     }
-    const page = '&' + QueryFilters.PAGE + this._queriesObject.page
-    const pageSizeParam = this._queriesObject.pagesize !== '' ? '&' + QueryFilters.PAGESIZE + this._queriesObject.pagesize : '';
-    const constructedPageAndPageSizeQuery = `${page}${pageSizeParam}`;
-    this.setQueryStringInState(this._currentQuery + constructedPageAndPageSizeQuery)
+    this.searchApiService.getSearchResults(this.state.searchState.queryString.toString()).subscribe(
+      (response: SearchResponse) => {
+        this.setSearchResponseInState(response)
+      })
   }
 
-  setQueriesInState(key: keyof API_Query_Filters, value: string) {
-    this.setState({
-      ...this.state,
-      searchState: {
-        ...this.state.searchState,
-        queries: {
-          ...this.state.searchState.queries,
-          [key]: value
-        }
-      }
-    })
+  //Set QueryString in State with updated searchTerm
+  QueryConstructor(queryType: QueryFilters, value: string) {
+    this.state.searchState.queryString.set(queryType, value)
   }
 
-  setQueryStringInState(queryString: string) {
+  setSearchResponseInState(response: SearchResponse) {
     this.setState({
-      ...this.state,
       searchState: {
         ...this.state.searchState,
-        queryString: queryString
-      }
-    })
-  }
-
-  resetQueriesObject() {
-    this.setState({
-      ...this.state,
-      searchState: {
-        ...this.state.searchState,
-        queries: initialQueries
-      }
+        searchResponse: response
+      },
+      apiCallState: APICallState.LOADED
     });
   }
 
   public get searchTerm(): string {
     return this._searchTerm;
   }
+
   public set searchTerm(latestSearchTerm: string) {
     this._searchTerm = latestSearchTerm;
     this.setState({

@@ -11,8 +11,8 @@ import { SearchResponse } from '../models/search.model';
 export class SearchApiService {
 
   constructor(private httpService: HttpClient) { }
-  getSearchResults(filters: string): Observable<SearchResponse> {
-    const url = environment.apiURL + filters + environment.apiSite;
+  getSearchResults(queries: string): Observable<SearchResponse> {
+    const url = environment.apiEndpoint + '?' + queries + environment.apiFilter;
     console.log(url)
     return this.httpService
       .get<SearchResponse>(url)
