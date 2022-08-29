@@ -13,7 +13,6 @@ import { SearchBarComponent } from './feature/search-bar/search-bar.component';
 import { QuestionsComponent } from './feature/questions/questions.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { QuestionComponent } from './feature/questions/question/question.component';
-import { HomeComponent } from './feature/home/home.component';
 import { SidebarComponent } from './feature/sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
 import { FilterTextPopupComponent } from './feature/search-bar/filter-text-popup/filter-text-popup.component';
@@ -25,7 +24,6 @@ import { FilterTextPopupComponent } from './feature/search-bar/filter-text-popup
     SearchBarComponent,
     QuestionsComponent,
     QuestionComponent,
-    HomeComponent,
     SidebarComponent,
     FilterTextPopupComponent
   ],
