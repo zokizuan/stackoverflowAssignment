@@ -15,7 +15,7 @@
   </ng-container>
   <div class="results-container">
     <ng-container
-                  *ngFor="let item of (items$ | async)! | paginate: { itemsPerPage: itemsInPage, currentPage: this.rootStateService.pageNumber, totalItems: (total$|async)! } ">
+                  *ngFor="let item of (searchResponse$ | async)?.items! | paginate: { itemsPerPage: itemsInPage, currentPage: (searchResponse$ | async)?.page , totalItems: (searchResponse$ | async)?.total } ">
       <app-question [props]="item"></app-question>
     </ng-container>
   </div>
@@ -25,7 +25,7 @@
   <div style="font-size: 27px; font-weight: 500; margin-bottom: 16px;"> Search Results </div>
   <div *ngIf="searchTerm$ | async" class="caption">Results for {{searchTerm$ | async}}</div>
   <div class="total-result-container">
-    <div *ngIf="searchTerm$ | async" class="total-results"> {{total$ | async | number}} results
+    <div *ngIf="searchTerm$ | async" class="total-results"> {{(searchResponse$ | async)?.total | number}} results
     </div>
     <div class="split-button-group"><button type="button"
               class="split-button split-button-active ">Votes</button><button type="button"

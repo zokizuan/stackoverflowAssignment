@@ -18,6 +18,5 @@ export class SearchBarComponent implements OnInit {
     this.filterPopup = false;
   }
   ngOnInit(): void {
-    console.log(this.filterPopup)
   }
 }

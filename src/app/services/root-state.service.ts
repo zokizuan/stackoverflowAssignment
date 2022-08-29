@@ -1,7 +1,7 @@
 import { Results } from './../models/search.model';
 import { QueryFilters } from '../enums/query-filters.enum';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { first, map, Observable } from 'rxjs';
 import { APICallState } from '../enums/api-call-state.enum';
 import { SearchResponse } from '../models/search.model';
 import { StateService } from '../store/global.store';
@@ -41,26 +41,28 @@ const initialState: RootState = {
 export class RootStateService extends StateService<RootState> {
   constructor(private searchApiService: SearchApiService, private router: Router) {
     super(initialState);
-    /*
-    * This will run whenever the searchTerm changes.
-    * Using distinctUntilChanged to prevent multiple requests with same searchTerm.
-     */
+
+    // For setting PageSize
     this.pageSize$.subscribe(pageSize => {
       if (pageSize !== 0) {
         this.setPageSize(pageSize);
       }
     });
-    this.pageNumber$.pipe(distinctUntilChanged()).subscribe(pageNumber => {
-      if (pageNumber !== 0) {
-        this.getPage(pageNumber);
+    // These  will run whenever the pageNumber changes.
+
+    this.pageNumber$.pipe(distinctUntilChanged()
+    ).subscribe(pageNumber => {
+      // beacause pageNumber 1 is loaded by default
+      if (pageNumber > 1) {
+        this.getSearchResults(pageNumber);
       }
     });
-    this.searchTerm$.pipe(
-      distinctUntilChanged())
+    // These  will run whenever the searchTerm changes.
+    
+    this.searchTerm$
       .subscribe((searchTerm) => {
         if (searchTerm !== '') {
-          this.router.navigate(['/search']),
-            this.search()
+            this.getSearchResults()
         }
         else {
           console.log('searchTerm is empty')
@@ -70,7 +72,7 @@ export class RootStateService extends StateService<RootState> {
 
   private _searchTerm: string = this.state.searchState.searchTerm;
   private _pageSize: number = 0;
-  private _PageNumber: number = 0;
+  private _PageNumber: number = 1;
 
   //Observables
   rootState$: Observable<RootState> = this.select((state) => state);
@@ -83,35 +85,36 @@ export class RootStateService extends StateService<RootState> {
   apiCallState$: Observable<APICallState> = this.select((state) => state.apiCallState);
 
 
-  search() {
+  getSearchResults(pageNumber:number = 1) {
     this.setState({ apiCallState: APICallState.LOADING });
     this.QueryBuilder(QueryFilters.QUERY, this._searchTerm);
-    this.searchApiService.getSearchResults(this.state.searchState.queryString.toString())
-      .subscribe(
-     (response: SearchResponse) => {
-       this.setSearchResponseInState(response)
-     }) 
+    this.QueryBuilder(QueryFilters.PAGE, pageNumber);
+    this.router.navigate(['/search']);
+    const queryString = this.state.searchState.queryString.toString();
+    this.searchApiService.getSearchResults(queryString)
+      .pipe(
+        map((response: SearchResponse) => {
+          this.setSearchResponseInState(response)
+        }),
+        first()
+      ).subscribe()
   }
 
   setPageSize(pageSize: number) {
     this.QueryBuilder(QueryFilters.PAGESIZE, pageSize.toString());
   }
 
-  getPage(pageNumber: number) {
-    this.QueryBuilder(QueryFilters.PAGE, pageNumber.toString());
-    this.searchApiService.getSearchResults(this.state.searchState.queryString.toString())
-    .subscribe(
-    (response: SearchResponse) => {
-      this.setSearchResponseInState(response)
-    }) 
+  //Set QueryString in State with updated searchTerm
+  QueryBuilder(queryType: QueryFilters, value: string | number) {
+    this.state.searchState.queryString.set(queryType, ""+value)
   }
 
-  //Set QueryString in State with updated searchTerm
-  QueryBuilder(queryType: QueryFilters, value: string) {
-    this.state.searchState.queryString.set(queryType, value)
+  removeQueryFromQueryString(queryType: QueryFilters) {
+    this.state.searchState.queryString.delete(queryType);
   }
 
   setSearchResponseInState(response: SearchResponse) {
+    console.log(response)
     this.setState({
       searchState: {
         ...this.state.searchState,
@@ -169,5 +172,4 @@ export class RootStateService extends StateService<RootState> {
       }
     });
   }
-
 }
