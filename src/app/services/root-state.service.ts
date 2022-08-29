@@ -61,7 +61,7 @@ export class RootStateService extends StateService<RootState> {
     this.searchTerm$
       .subscribe((searchTerm) => {
         if (searchTerm !== '') {
-            this.getSearchResults()
+          this.getSearchResults()
         }
         else {
           console.log('searchTerm is empty')
@@ -84,17 +84,39 @@ export class RootStateService extends StateService<RootState> {
   apiCallState$: Observable<APICallState> = this.select((state) => state.apiCallState);
 
 
-  getSearchResults(pageNumber:number = 1) {
+  getSearchResults(pageNumber: number = 1) {
     this.setState({ apiCallState: APICallState.LOADING });
+    this.removeAllQueryFromQueryStringExcept(QueryFilters.PAGESIZE);
     this.QueryBuilder(QueryFilters.QUERY, this._searchTerm);
     this.QueryBuilder(QueryFilters.PAGE, pageNumber);
     this.router.navigate(['/search']);
+    this.getResultsFromQueryString();
+  }
+
+  getAllQuestions(pageNumber: number = 1) {
+    this.setState({ apiCallState: APICallState.LOADING });
+    this.QueryBuilder(QueryFilters.PAGE, pageNumber);
+    this.QueryBuilder(QueryFilters.ORDER, 'desc');
+    this.QueryBuilder(QueryFilters.SORT, 'votes');
+    this.getResultsFromQueryString();
+  }
+  getTopQuestions(pageNumber: number = 1) {
+    this.setState({ apiCallState: APICallState.LOADING });
+    this.QueryBuilder(QueryFilters.PAGE, pageNumber);
+    this.QueryBuilder(QueryFilters.ORDER, 'desc');
+    this.QueryBuilder(QueryFilters.SORT, 'creation');
+    this.QueryBuilder(QueryFilters.ACCEPTED, 'False');
+    this.QueryBuilder(QueryFilters.CLOSED, 'False');
+    this.getResultsFromQueryString();
+  }
+
+  getResultsFromQueryString() {
     const queryString = this.state.searchState.queryString.toString();
-    this.stackApiService.getSearchResults(queryString)
+    this.stackApiService.getResults(queryString)
       .pipe(
         map((response: SearchResponse) => {
           this.setSearchResponseInState(response)
-        }),first()).subscribe()
+        }), first()).subscribe()
   }
 
   setPageSize(pageSize: number) {
@@ -103,11 +125,15 @@ export class RootStateService extends StateService<RootState> {
 
   //Set QueryString in State with updated searchTerm
   QueryBuilder(queryType: QueryFilters, value: string | number) {
-    this.state.searchState.queryString.set(queryType, ""+value)
+    this.state.searchState.queryString.set(queryType, "" + value)
   }
 
-  removeQueryFromQueryString(queryType: QueryFilters) {
-    this.state.searchState.queryString.delete(queryType);
+  removeAllQueryFromQueryStringExcept(queryType: QueryFilters) {
+    for (const [key, value] of this.state.searchState.queryString.entries()) {
+      if (key !== queryType) {
+        this.state.searchState.queryString.delete(key)
+      }
+    }
   }
 
   setSearchResponseInState(response: SearchResponse) {
@@ -130,7 +156,6 @@ export class RootStateService extends StateService<RootState> {
   public get pageNumber(): number {
     return this._PageNumber;
   }
-
   public set searchTerm(latestSearchTerm: string) {
     this._searchTerm = latestSearchTerm;
     this.setState({
@@ -141,7 +166,6 @@ export class RootStateService extends StateService<RootState> {
       }
     });
   }
-
   public set pageSize(pageSize: number) {
     this._pageSize = pageSize;
     this.setState({
@@ -155,7 +179,6 @@ export class RootStateService extends StateService<RootState> {
       }
     });
   }
-
   public set pageNumber(pageNumber: number) {
     this._PageNumber = pageNumber;
     this.setState({

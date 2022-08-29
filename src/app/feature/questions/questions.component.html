@@ -18,7 +18,7 @@
       *ngTemplateOutlet="search; context: { $implicit: (view$ | async) }"
     ></ng-container>
   </ng-container>
-  <ng-container *ngIf="(view$ | async) === 'questions'">
+  <ng-container *ngIf="(view$ | async) === 'all-questions'">
     <ng-container
       *ngTemplateOutlet="heading; context: { $implicit: 'All Questions' }"
     ></ng-container>

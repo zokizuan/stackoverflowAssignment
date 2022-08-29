@@ -11,18 +11,12 @@ import { SearchResponse } from '../models/search.model';
 export class StackApiService {
 
   constructor(private httpService: HttpClient) { }
-  getSearchResults(queries: string): Observable<SearchResponse> {
+  getResults(queries: string): Observable<SearchResponse> {
     const url = environment.apiEndpoint + '?' + queries + environment.apiFilter;
     // console.log(url)
     return this.httpService
       .get<SearchResponse>(url)
       .pipe(catchError(this.processError));
-  }
-  getTopQuestions(): Observable<SearchResponse> {
-    const url = environment.apiEndpoint + '?' + 'order=desc&sort=votes' + environment.apiFilter;
-    return this.httpService
-    .get<SearchResponse>(url)
-    .pipe(catchError(this.processError));
   }
 //TODO : this wont work on custom error scinarios need to fix it
   private processError(err: any) {

@@ -10,16 +10,24 @@ import { RootStateService } from 'src/app/services/root-state.service';
 })
 
 export class QuestionsComponent implements OnInit {
-  itemsInPage = 10; 
+  itemsInPage = 10;
   constructor(public rootStateService: RootStateService, private route: ActivatedRoute) { }
-  
+
   searchResponse$ = this.rootStateService.searchResponse$;
   searchTerm$ = this.rootStateService.searchTerm$;
   view$: Observable<string> = this.route.data.pipe(map(dataFromRouter => dataFromRouter?.['view']));
-  
+
   ngOnInit(): void {
     //Setting the page size to 10 initially
     this.rootStateService.pageSize = this.itemsInPage;
+    this.view$.subscribe(x => {
+      console.log(x)
+      if (x === 'all-questions') {
+        this.rootStateService.getAllQuestions()
+      }
+      else if (x === 'home') {
+        this.rootStateService.getTopQuestions()
+      }
+    })
   }
-
 }

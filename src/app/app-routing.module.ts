@@ -4,7 +4,7 @@ import { QuestionsComponent } from './feature/questions/questions.component';
 
 const routes: Routes = [
   { path: 'home', component:QuestionsComponent, data: { view: 'home' }},
-  { path: 'questions', component:QuestionsComponent, data: { view: 'questions' } },
+  { path: 'questions', component:QuestionsComponent, data: { view: 'all-questions' } },
   { path: 'search', component:QuestionsComponent, data: { view: 'search' }},
   { path: '',  redirectTo: 'home', pathMatch: 'full' }
 ];
