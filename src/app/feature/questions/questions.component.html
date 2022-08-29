@@ -1,39 +1,64 @@
-<pagination-controls previousLabel="Prev" nextLabel="Next" [responsive]="true"
-                       (pageChange)="this.rootStateService.pageNumber =($event)">
-  </pagination-controls>  
+<pagination-controls
+  previousLabel="Prev"
+  nextLabel="Next"
+  [responsive]="true"
+  (pageChange)="this.rootStateService.pageNumber = $event"
+>
+</pagination-controls>
 <div id="mainbar">
   <app-spinner></app-spinner>
   <!-- For simplicity Creating Component was not required with current requirement -->
   <ng-container *ngIf="(view$ | async) === 'home'">
-    <ng-container *ngTemplateOutlet="heading; context:{ $implicit:'Top Questions'} "></ng-container>
+    <ng-container
+      *ngTemplateOutlet="heading; context: { $implicit: 'Top Questions' }"
+    ></ng-container>
   </ng-container>
   <ng-container *ngIf="(view$ | async) === 'search'">
-    <ng-container *ngTemplateOutlet="search; context:{ $implicit: (view$ | async)}"></ng-container>
+    <ng-container
+      *ngTemplateOutlet="search; context: { $implicit: (view$ | async) }"
+    ></ng-container>
   </ng-container>
   <ng-container *ngIf="(view$ | async) === 'questions'">
-    <ng-container *ngTemplateOutlet="heading; context:{ $implicit:'All Questions'} "></ng-container>
+    <ng-container
+      *ngTemplateOutlet="heading; context: { $implicit: 'All Questions' }"
+    ></ng-container>
   </ng-container>
+
   <div class="results-container">
     <ng-container
-                  *ngFor="let item of (searchResponse$ | async)?.items! | paginate: { itemsPerPage: itemsInPage, currentPage: (searchResponse$ | async)?.page , totalItems: (searchResponse$ | async)?.total } ">
+      *ngFor="let item of (searchResponse$ | async)?.items!
+        | paginate: {
+                itemsPerPage: itemsInPage,
+                currentPage: (searchResponse$ | async)?.page,
+                totalItems: (searchResponse$ | async)?.total }">
       <app-question [props]="item"></app-question>
     </ng-container>
   </div>
-  
 </div>
+
+
 <ng-template #search let-view>
-  <div style="font-size: 27px; font-weight: 500; margin-bottom: 16px;"> Search Results </div>
-  <div *ngIf="searchTerm$ | async" class="caption">Results for {{searchTerm$ | async}}</div>
+  <div style="font-size: 27px; font-weight: 500; margin-bottom: 16px">
+    Search Results
+  </div>
+  <div *ngIf="searchTerm$ | async" class="caption">
+    Results for {{ searchTerm$ | async }}
+  </div>
   <div class="total-result-container">
-    <div *ngIf="searchTerm$ | async" class="total-results"> {{(searchResponse$ | async)?.total | number}} results
+    <div *ngIf="searchTerm$ | async" class="total-results">
+      {{ (searchResponse$ | async)?.total | number }} results
     </div>
-    <div class="split-button-group"><button type="button"
-              class="split-button split-button-active ">Votes</button><button type="button"
-              class="split-button">Views</button><button type="button"
-              class="split-button">Newest</button><button type="button"
-              class="split-button">Oldest</button></div>
+    <div class="split-button-group">
+      <button type="button" class="split-button split-button-active">
+        Votes</button
+      ><button type="button" class="split-button">Views</button
+      ><button type="button" class="split-button">Newest</button
+      ><button type="button" class="split-button">Oldest</button>
+    </div>
   </div>
 </ng-template>
 <ng-template #heading let-heading>
-  <div style="font-size: 27px; font-weight: 500; margin-bottom: 16px;"> {{heading}} </div>
+  <div style="font-size: 27px; font-weight: 500; margin-bottom: 16px">
+    {{ heading }}
+  </div>
 </ng-template>

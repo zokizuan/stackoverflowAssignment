@@ -5,7 +5,7 @@ import { first, map, Observable } from 'rxjs';
 import { APICallState } from '../enums/api-call-state.enum';
 import { SearchResponse } from '../models/search.model';
 import { StateService } from '../store/global.store';
-import { SearchApiService } from './search-api.service';
+import { StackApiService } from './stack-api.service';
 import { distinctUntilChanged } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -39,17 +39,16 @@ const initialState: RootState = {
   providedIn: 'root'
 })
 export class RootStateService extends StateService<RootState> {
-  constructor(private searchApiService: SearchApiService, private router: Router) {
+  constructor(private stackApiService: StackApiService, private router: Router) {
     super(initialState);
-
     // For setting PageSize
     this.pageSize$.subscribe(pageSize => {
       if (pageSize !== 0) {
         this.setPageSize(pageSize);
       }
     });
-    // These  will run whenever the pageNumber changes.
 
+    // These  will run whenever the pageNumber changes.
     this.pageNumber$.pipe(distinctUntilChanged()
     ).subscribe(pageNumber => {
       // beacause pageNumber 1 is loaded by default
@@ -57,8 +56,8 @@ export class RootStateService extends StateService<RootState> {
         this.getSearchResults(pageNumber);
       }
     });
-    // These  will run whenever the searchTerm changes.
-    
+
+    // These  will run whenever the searchTerm changes.    
     this.searchTerm$
       .subscribe((searchTerm) => {
         if (searchTerm !== '') {
@@ -91,13 +90,11 @@ export class RootStateService extends StateService<RootState> {
     this.QueryBuilder(QueryFilters.PAGE, pageNumber);
     this.router.navigate(['/search']);
     const queryString = this.state.searchState.queryString.toString();
-    this.searchApiService.getSearchResults(queryString)
+    this.stackApiService.getSearchResults(queryString)
       .pipe(
         map((response: SearchResponse) => {
           this.setSearchResponseInState(response)
-        }),
-        first()
-      ).subscribe()
+        }),first()).subscribe()
   }
 
   setPageSize(pageSize: number) {
