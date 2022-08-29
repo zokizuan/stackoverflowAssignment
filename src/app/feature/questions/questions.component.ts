@@ -12,34 +12,18 @@ import { SearchApiService } from 'src/app/services/search-api.service';
 })
 
 export class QuestionsComponent implements OnInit {
-  searchResponse!: SearchResponse;
-  p: number = 1;
-  collection!: any[];  
-  items!: Results[];
-  searchTerm = this.rootStateService.searchTerm$;
+  searchResponse$=this.rootStateService.searchResponse$;
+  items$:Observable<Results[]> = this.rootStateService.items$;
+  searchTerm$ = this.rootStateService.searchTerm$;
   view$: Observable<string> = this.route.data.pipe(map(dataFromRouter => dataFromRouter?.['view']));
-  ItemsInPage!: number; 
-  pageNumber!: number;
-  totalItems!: number;
+  total$ =this.rootStateService.searchResponse$.pipe(map(x=>x.total))
+  itemsInPage = 10; 
 
-  constructor(private rootStateService: RootStateService, private searchApiService: SearchApiService, private route: ActivatedRoute) { }
-  handlePageChange(event: any) {
-    this.pageNumber = event;
-    this.rootStateService.getPageAndPageSize(this.pageNumber);
-    console.log(event)
-  }
+  constructor(public rootStateService: RootStateService, private route: ActivatedRoute) { }
+
   ngOnInit(): void {
-    this.view$.subscribe(data => {
-      console.log(data)
-    })
-    this.rootStateService.searchResponse$.subscribe(data => {
-      this.items = data.items;
-      this.searchResponse = data;
-      this.ItemsInPage = data.page_size;
-      this.pageNumber = data.page;
-      this.totalItems = data.total;
-      console.log(data)
-    })
+    //Setting the page size to 10 initially
+    this.rootStateService.pageSize = this.itemsInPage;
   }
 
 }

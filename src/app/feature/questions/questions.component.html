@@ -12,17 +12,17 @@
   </ng-container>
   <div class="results-container">
     <ng-container
-                  *ngFor="let item of items | paginate: { itemsPerPage: ItemsInPage, currentPage: pageNumber, totalItems: totalItems }">
+                  *ngFor="let item of (items$ | async)! | paginate: { itemsPerPage: itemsInPage, currentPage: this.rootStateService.pageNumber, totalItems: (total$|async)! } ">
       <app-question [props]="item"></app-question>
     </ng-container>
   </div>
 </div>
-<pagination-controls previousLabel="Prev" nextLabel="Next" [responsive]="true" (pageChange)="handlePageChange($event)"></pagination-controls>
+<pagination-controls previousLabel="Prev" nextLabel="Next" [responsive]="true" (pageChange)="this.rootStateService.pageNumber =($event)"></pagination-controls>
 <ng-template #search let-view>
   <div style="font-size: 27px; font-weight: 500; margin-bottom: 16px;"> Search Results </div>
-  <div *ngIf="searchTerm | async" class="caption">Results for {{searchTerm | async}}</div>
+  <div *ngIf="searchTerm$ | async" class="caption">Results for {{searchTerm$ | async}}</div>
   <div class="total-result-container">
-    <div *ngIf="searchTerm | async" class="total-results"> {{searchResponse.total| number}} results
+    <div *ngIf="searchTerm$ | async" class="total-results"> {{total$ | async | number}} results
     </div>
     <div class="split-button-group"><button type="button"
               class="split-button split-button-active ">Votes</button><button type="button"

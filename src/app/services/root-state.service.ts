@@ -1,13 +1,12 @@
-import { Utility } from './../shared/utility';
+import { Results } from './../models/search.model';
 import { QueryFilters } from '../enums/query-filters.enum';
 import { Injectable } from '@angular/core';
-import { delay, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { APICallState } from '../enums/api-call-state.enum';
 import { SearchResponse } from '../models/search.model';
 import { StateService } from '../store/global.store';
 import { SearchApiService } from './search-api.service';
 import { distinctUntilChanged } from 'rxjs';
-import { API_Query_Filters } from '../models/api-filters.model';
 import { Router } from '@angular/router';
 
 
@@ -16,16 +15,12 @@ export interface RootState {
     searchTerm: string;
     searchResponse: SearchResponse;
     queryString: URLSearchParams;
-    // queries: API_Query_Filters;
   };
   apiCallState: APICallState;
 }
-//Change Enum QueryFilter to generate Filters Object which whill hold the Values for Api Call
-// const initialQueries: API_Query_Filters = Utility.enumToObject(QueryFilters) as unknown as API_Query_Filters;
-
 const initialState: RootState = {
   searchState: {
-    searchTerm: 'test',
+    searchTerm: '',
     searchResponse: {
       items: [],
       has_more: false,
@@ -36,7 +31,6 @@ const initialState: RootState = {
       total: 0
     },
     queryString: (new URLSearchParams()),
-    // queries: initialQueries
   },
   apiCallState: APICallState.NOTLOADED,
 };
@@ -47,13 +41,26 @@ const initialState: RootState = {
 export class RootStateService extends StateService<RootState> {
   constructor(private searchApiService: SearchApiService, private router: Router) {
     super(initialState);
-    //Using debounceTime to prevent multiple requests when user is typing
+    /*
+    * This will run whenever the searchTerm changes.
+    * Using distinctUntilChanged to prevent multiple requests with same searchTerm.
+     */
+    this.pageSize$.subscribe(pageSize => {
+      if (pageSize !== 0) {
+        this.setPageSize(pageSize);
+      }
+    });
+    this.pageNumber$.pipe(distinctUntilChanged()).subscribe(pageNumber => {
+      if (pageNumber !== 0) {
+        this.getPage(pageNumber);
+      }
+    });
     this.searchTerm$.pipe(
       distinctUntilChanged())
       .subscribe((searchTerm) => {
         if (searchTerm !== '') {
           this.router.navigate(['/search']),
-            this.search(searchTerm)
+            this.search()
         }
         else {
           console.log('searchTerm is empty')
@@ -62,37 +69,45 @@ export class RootStateService extends StateService<RootState> {
   }
 
   private _searchTerm: string = this.state.searchState.searchTerm;
+  private _pageSize: number = 0;
+  private _PageNumber: number = 0;
 
   //Observables
   rootState$: Observable<RootState> = this.select((state) => state);
   searchResponse$: Observable<SearchResponse> = this.select((state) => state.searchState.searchResponse);
+  items$: Observable<Results[]> = this.select((state) => state.searchState.searchResponse.items);
   searchTerm$: Observable<string> = this.select((state) => state.searchState.searchTerm);
   currentQuery$: Observable<URLSearchParams> = this.select((state) => state.searchState.queryString);
+  pageNumber$: Observable<number> = this.select((state) => state.searchState.searchResponse.page);
+  pageSize$: Observable<number> = this.select((state) => state.searchState.searchResponse.page_size);
   apiCallState$: Observable<APICallState> = this.select((state) => state.apiCallState);
 
 
-  search(searchTerm: string) {
+  search() {
     this.setState({ apiCallState: APICallState.LOADING });
-    this.QueryConstructor(QueryFilters.QUERY, this._searchTerm);
-    this.searchApiService.getSearchResults(this.state.searchState.queryString.toString()).subscribe(
-      (response: SearchResponse) => {
-        this.setSearchResponseInState(response)
-      })
+    this.QueryBuilder(QueryFilters.QUERY, this._searchTerm);
+    this.searchApiService.getSearchResults(this.state.searchState.queryString.toString())
+      .subscribe(
+     (response: SearchResponse) => {
+       this.setSearchResponseInState(response)
+     }) 
   }
 
-  getPageAndPageSize(pageNumber: number, pageSize?: number) {
-    this.QueryConstructor(QueryFilters.PAGE, pageNumber.toString());
-    if (pageSize !== undefined) {
-      this.QueryConstructor(QueryFilters.PAGESIZE, pageSize.toString());
-    }
-    this.searchApiService.getSearchResults(this.state.searchState.queryString.toString()).subscribe(
-      (response: SearchResponse) => {
-        this.setSearchResponseInState(response)
-      })
+  setPageSize(pageSize: number) {
+    this.QueryBuilder(QueryFilters.PAGESIZE, pageSize.toString());
+  }
+
+  getPage(pageNumber: number) {
+    this.QueryBuilder(QueryFilters.PAGE, pageNumber.toString());
+    this.searchApiService.getSearchResults(this.state.searchState.queryString.toString())
+    .subscribe(
+    (response: SearchResponse) => {
+      this.setSearchResponseInState(response)
+    }) 
   }
 
   //Set QueryString in State with updated searchTerm
-  QueryConstructor(queryType: QueryFilters, value: string) {
+  QueryBuilder(queryType: QueryFilters, value: string) {
     this.state.searchState.queryString.set(queryType, value)
   }
 
@@ -109,6 +124,12 @@ export class RootStateService extends StateService<RootState> {
   public get searchTerm(): string {
     return this._searchTerm;
   }
+  public get pageSize(): number {
+    return this._pageSize;
+  }
+  public get pageNumber(): number {
+    return this._PageNumber;
+  }
 
   public set searchTerm(latestSearchTerm: string) {
     this._searchTerm = latestSearchTerm;
@@ -117,6 +138,34 @@ export class RootStateService extends StateService<RootState> {
       searchState: {
         ...this.state.searchState,
         searchTerm: latestSearchTerm
+      }
+    });
+  }
+
+  public set pageSize(pageSize: number) {
+    this._pageSize = pageSize;
+    this.setState({
+      ...this.state,
+      searchState: {
+        ...this.state.searchState,
+        searchResponse: {
+          ...this.state.searchState.searchResponse,
+          page_size: pageSize
+        }
+      }
+    });
+  }
+
+  public set pageNumber(pageNumber: number) {
+    this._PageNumber = pageNumber;
+    this.setState({
+      ...this.state,
+      searchState: {
+        ...this.state.searchState,
+        searchResponse: {
+          ...this.state.searchState.searchResponse,
+          page: pageNumber
+        }
       }
     });
   }
