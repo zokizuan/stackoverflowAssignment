@@ -15,6 +15,7 @@ export class SearchBarComponent implements OnInit {
 
   onSubmit() {
     this.rootStateService.searchTerm = this.searchControl.value;
+    this.filterPopup = false;
   }
   ngOnInit(): void {
     console.log(this.filterPopup)

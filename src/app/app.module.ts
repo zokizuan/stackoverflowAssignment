@@ -16,6 +16,7 @@ import { QuestionComponent } from './feature/questions/question/question.compone
 import { HomeComponent } from './feature/home/home.component';
 import { SidebarComponent } from './feature/sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
+import { FilterTextPopupComponent } from './feature/search-bar/filter-text-popup/filter-text-popup.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { CommonModule } from '@angular/common';
     QuestionsComponent,
     QuestionComponent,
     HomeComponent,
-    SidebarComponent
+    SidebarComponent,
+    FilterTextPopupComponent
   ],
   imports: [
     BrowserModule,

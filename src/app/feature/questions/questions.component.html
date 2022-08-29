@@ -1,3 +1,6 @@
+<pagination-controls previousLabel="Prev" nextLabel="Next" [responsive]="true"
+                       (pageChange)="this.rootStateService.pageNumber =($event)">
+  </pagination-controls>  
 <div id="mainbar">
   <app-spinner></app-spinner>
   <!-- For simplicity Creating Component was not required with current requirement -->
@@ -16,8 +19,8 @@
       <app-question [props]="item"></app-question>
     </ng-container>
   </div>
+  
 </div>
-<pagination-controls previousLabel="Prev" nextLabel="Next" [responsive]="true" (pageChange)="this.rootStateService.pageNumber =($event)"></pagination-controls>
 <ng-template #search let-view>
   <div style="font-size: 27px; font-weight: 500; margin-bottom: 16px;"> Search Results </div>
   <div *ngIf="searchTerm$ | async" class="caption">Results for {{searchTerm$ | async}}</div>
