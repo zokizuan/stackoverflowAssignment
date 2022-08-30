@@ -10,6 +10,8 @@
 .question-list-container{
 display: flex;
 flex-direction: column;
+position: relative;
+height: 100%;
 }
 .question-list {
   padding: 0;

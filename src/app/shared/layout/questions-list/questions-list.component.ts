@@ -11,8 +11,14 @@ import { RootStateService } from 'src/app/services/root-state.service';
 
 export class QuestionsListComponent implements OnInit {
   itemsInPage = this.rootStateService.pageSize;
-  constructor(public rootStateService: RootStateService) { }
   @Input() response$!: Observable<APIResponse>;
+  constructor(public rootStateService: RootStateService) { }
+  goToTop() {
+    window.scroll({
+      top: 0,
+      left: 0,
+    });
+  }
   ngOnInit(): void {
   }
 }

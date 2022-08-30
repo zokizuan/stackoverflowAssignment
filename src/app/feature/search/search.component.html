@@ -14,10 +14,11 @@
         {{ (response$ | async)?.total | number }} results
       </div>
       <div class="split-button-group">
-        <button type="button" class="split-button split-button-active"> Votes</button><button
-                type="button" class="split-button">Views</button><button type="button"
-                class="split-button">Newest</button><button type="button"
-                class="split-button">Oldest</button>
+        <button type="button"  class="split-button" [ngClass]="{'split-button-active':activeSplit == 'votes'}" id="votes" 
+        (click)="sortBy('votes','asc',$event)">Votes</button>
+        <button type="button" class="split-button" [ngClass]="{'split-button-active':activeSplit == 'activity'}" id="activity" (click)="sortBy('activity','asc',$event)">Activity</button>
+        <button type="button" class="split-button" [ngClass]="{'split-button-active':activeSplit == 'newest'}" id="newest" (click)="sortBy('creation','desc',$event)">Newest</button>
+        <button type="button" class="split-button" [ngClass]="{'split-button-active':activeSplit == 'oldest'}" id="oldest" (click)="sortBy('creation','asc',$event)">Oldest</button>
       </div>
     </div>
   </div>

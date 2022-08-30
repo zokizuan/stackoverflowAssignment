@@ -79,7 +79,6 @@ export class RootStateService extends StateService<RootState> {
   pageSize$: Observable<number> = this.select((state) => state.searchState.searchResponse.page_size);
   APIStatus$: Observable<number> = this.select((state) => state.apiCallState);
 
-
   onPageNumberChange(pageNumber: number) {
     this.QueryBuilder(QueryFilters.PAGE, pageNumber.toString());
     this.getResultsFromQueryString();
@@ -89,12 +88,15 @@ export class RootStateService extends StateService<RootState> {
     this.setState({ apiCallState: APICallState.LOADING });
     this.router.navigate(['/search']);
     this.removeAllQueryFromQueryStringExcept(QueryFilters.PAGESIZE);
-    this.QueryBuilder(QueryFilters.QUERY, this._searchTerm);
     const page = pageNumber ? pageNumber : this._PageNumber;
     const dataInPage = pageSize ? pageSize : this._pageSize;
+    this.QueryBuilder(QueryFilters.QUERY, this._searchTerm);
     this.QueryBuilder(QueryFilters.PAGE, page);
     this.QueryBuilder(QueryFilters.PAGESIZE, dataInPage);
-    this.getResultsFromQueryString();
+    if (this._searchTerm !== '') { 
+      this.getResultsFromQueryString();
+
+    }
   }
 
   getAllQuestions(pageNumber?: number, pageSize?: number) {
@@ -117,6 +119,15 @@ export class RootStateService extends StateService<RootState> {
     this.QueryBuilder(QueryFilters.SORT, 'creation');
     this.QueryBuilder(QueryFilters.ACCEPTED, 'False');
     this.QueryBuilder(QueryFilters.CLOSED, 'False');
+    this.getResultsFromQueryString();
+  }
+
+  setSortBy(value: string, orderType?: string) {
+    this.QueryBuilder(QueryFilters.PAGE, 1);
+    this.QueryBuilder(QueryFilters.SORT, value);
+    if (orderType) {
+      this.QueryBuilder(QueryFilters.ORDER, orderType);
+    }
     this.getResultsFromQueryString();
   }
 

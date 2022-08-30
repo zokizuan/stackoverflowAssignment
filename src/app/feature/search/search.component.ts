@@ -11,7 +11,17 @@ import { RootStateService } from 'src/app/services/root-state.service';
 export class SearchComponent implements OnInit {
   searchTerm$ = this.rootStateService.searchTerm$;
   response$!: Observable<APIResponse>
-  constructor(private rootStateService:RootStateService) { }
+  constructor(private rootStateService: RootStateService) { }
+  activeSplit= "";
+  sortBy(value: string, orderType?: string,e?:Event) {
+    if (orderType) {
+      this.rootStateService.setSortBy(value, orderType);
+    }
+    else {
+      this.rootStateService.setSortBy(value);
+    }
+    this.activeSplit = (e?.currentTarget as HTMLInputElement).id; 
+  }
   ngOnInit(): void {
     this.rootStateService.getSearchResults();
     this.response$ = this.rootStateService.response$

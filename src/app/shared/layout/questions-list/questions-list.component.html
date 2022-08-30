@@ -1,6 +1,6 @@
 <div class="question-list-container">
+  <app-spinner></app-spinner>
   <div class="question-list">
-    <app-spinner></app-spinner>
     <div class="results-container">
       <ng-container *ngIf="(this.rootStateService.APIStatus$ | async )=== 3">
         <div class="error">
@@ -19,7 +19,7 @@
   <div *ngIf="(response$ | async)?.has_more" class="pagination-container">
     <pagination-controls class="my-pagination" previousLabel="Prev" nextLabel="Next"
                          [responsive]="true"
-                         (pageChange)="this.rootStateService.pageNumber = ($event)">
+                         (pageChange)="this.rootStateService.pageNumber = ($event);goToTop();">
     </pagination-controls>
   </div>
 </div>

@@ -25,6 +25,7 @@ body {
     "Noto Sans Display", Roboto, Helvetica, Arial, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   height: 100vh;
+  scroll-behavior: auto;
 }
 /* Inherit fonts for inputs and buttons */
 input,
@@ -33,6 +34,8 @@ textarea,
 select {
   font: inherit;
 }
-html:focus-within {
+/*  html:focus-within {
   scroll-behavior: smooth;
 }
+ */
+ 
