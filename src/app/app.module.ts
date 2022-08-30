@@ -10,22 +10,24 @@ import { SharedModule } from './shared/shared.module';
 import { GlobalErrorHandler } from './core/error-handler/globa-error-handler';
 import { GlobalSpinnerInterceptor } from './interceptor/global-spinner.interceptor';
 import { SearchBarComponent } from './feature/search-bar/search-bar.component';
-import { QuestionsComponent } from './feature/questions/questions.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { QuestionComponent } from './feature/questions/question/question.component';
 import { SidebarComponent } from './feature/sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
 import { FilterTextPopupComponent } from './feature/search-bar/filter-text-popup/filter-text-popup.component';
+import { HomeComponent } from './feature/home/home.component';
+import { SearchComponent } from './feature/search/search.component';
+import { QuestionsComponent } from './feature/questions/questions.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     SearchBarComponent,
-    QuestionsComponent,
-    QuestionComponent,
     SidebarComponent,
-    FilterTextPopupComponent
+    FilterTextPopupComponent,
+    HomeComponent,
+    SearchComponent,
+    QuestionsComponent
   ],
   imports: [
     BrowserModule,

@@ -1,11 +1,13 @@
-import { NgModule, Component } from '@angular/core';
+import { SearchComponent } from './feature/search/search.component';
+import { HomeComponent } from './feature/home/home.component';
+import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { QuestionsComponent } from './feature/questions/questions.component';
 
 const routes: Routes = [
-  { path: 'home', component:QuestionsComponent, data: { view: 'top-questions' }},
-  { path: 'questions', component:QuestionsComponent, data: { view: 'all-questions' } },
-  { path: 'search', component:QuestionsComponent, data: { view: 'search' }},
+  { path: 'home', component: HomeComponent },
+  { path: 'questions', component:QuestionsComponent, },
+  { path: 'search', component:SearchComponent, },
   { path: '',  redirectTo: 'home', pathMatch: 'full' }
 ];
 @NgModule({

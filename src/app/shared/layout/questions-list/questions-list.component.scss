@@ -1,0 +1,19 @@
+#mainbar,
+.mainbar {
+  width: 728px;
+  padding: 0;
+  float: left;
+  margin: 0;
+  position: relative;
+  height: 100%;
+}
+
+.results-container{
+  margin-left: -24px;
+  border-top: 1px solid #e3e6e8;
+}
+@media screen and (max-width: 980px) {
+  #mainbar {
+    width: 100%;
+  }
+}

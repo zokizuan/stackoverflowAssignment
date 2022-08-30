@@ -1,0 +1,20 @@
+<pagination-controls
+  previousLabel="Prev"
+  nextLabel="Next"
+  [responsive]="true"
+  (pageChange)="onPageChange($event)"
+>
+</pagination-controls>
+<div id="mainbar">
+  <app-spinner></app-spinner>
+  <div class="results-container">
+    <ng-container
+      *ngFor="let item of (searchResponse$ | async)?.items!
+        | paginate: {
+                itemsPerPage: itemsInPage,
+                currentPage: (searchResponse$ | async)?.page,
+                totalItems: (searchResponse$ | async)?.total }">
+      <app-question [props]="item"></app-question>
+    </ng-container>
+  </div>
+</div>
