@@ -88,7 +88,7 @@ export class RootStateService extends StateService<RootState> {
     this.setState({ apiCallState: APICallState.LOADING });
     this.router.navigate(['/search']);
     this.removeAllQueryFromQueryStringExcept(QueryFilters.PAGESIZE);
-    const page = pageNumber ? pageNumber : this._PageNumber;
+    const page = pageNumber ? pageNumber : 1;
     const dataInPage = pageSize ? pageSize : this._pageSize;
     this.QueryBuilder(QueryFilters.QUERY, this._searchTerm);
     this.QueryBuilder(QueryFilters.PAGE, page);
@@ -101,7 +101,7 @@ export class RootStateService extends StateService<RootState> {
 
   getAllQuestions(pageNumber?: number, pageSize?: number) {
     this.setState({ apiCallState: APICallState.LOADING });
-    const page = pageNumber ? pageNumber : this._PageNumber;
+    const page = pageNumber ? pageNumber : 1;
     const dataInPage = pageSize ? pageSize : this._pageSize;
     this.QueryBuilder(QueryFilters.PAGE, page);
     this.QueryBuilder(QueryFilters.PAGESIZE, dataInPage);
@@ -111,7 +111,7 @@ export class RootStateService extends StateService<RootState> {
   }
   getTopQuestions(pageNumber?: number, pageSize?: number) {
     this.setState({ apiCallState: APICallState.LOADING });
-    const page = pageNumber ? pageNumber : this._PageNumber;
+    const page = pageNumber ? pageNumber : 1;
     const dataInPage = pageSize ? pageSize : this._pageSize;
     this.QueryBuilder(QueryFilters.PAGE, page);
     this.QueryBuilder(QueryFilters.PAGESIZE, dataInPage);
