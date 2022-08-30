@@ -10,16 +10,10 @@ import { RootStateService } from 'src/app/services/root-state.service';
 })
 
 export class QuestionsListComponent implements OnInit {
-  itemsInPage = 10;
+  itemsInPage = this.rootStateService.pageSize;
   constructor(public rootStateService: RootStateService) { }
   @Input() response$!: Observable<APIResponse>;
-  onPageChange(pageNumber: number) {
-    this.rootStateService.pageNumber = pageNumber;
-    }
-  
   ngOnInit(): void {
-    //Setting the page size to 10 initially
-    console.log('setting page site')
-    this.rootStateService.pageSize = this.itemsInPage;
+    console.log(this.itemsInPage)
   }
 }

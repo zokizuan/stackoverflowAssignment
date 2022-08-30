@@ -13,8 +13,8 @@ export class QuestionsComponent implements OnInit {
   constructor(private rootStateService:RootStateService) { }
   response$!: Observable<APIResponse>
   ngOnInit(): void {
-    this.rootStateService.getAllQuestions();
     this.response$ = this.rootStateService.response$
+    this.rootStateService.getAllQuestions();
   }
 
 }

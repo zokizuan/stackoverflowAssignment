@@ -69,7 +69,7 @@ export class RootStateService extends StateService<RootState> {
   }
 
   private _searchTerm: string = this.state.searchState.searchTerm;
-  private _pageSize: number = 0;
+  private _pageSize: number = 10;
   private _PageNumber: number = 1;
 
   //Observables
@@ -85,39 +85,34 @@ export class RootStateService extends StateService<RootState> {
     this.getResultsFromQueryString()
   }
 
-  getSearchResults(pageNumber?: number) {
+  getSearchResults(pageNumber?: number,pageSize?: number) {
     this.setState({ apiCallState: APICallState.LOADING });
+    this.router.navigate(['/search'])
     this.removeAllQueryFromQueryStringExcept(QueryFilters.PAGESIZE);
     this.QueryBuilder(QueryFilters.QUERY, this._searchTerm);
-    if (pageNumber) {
-      this.QueryBuilder(QueryFilters.PAGE, this.pageNumber);
-    }
-    else {
-      this.QueryBuilder(QueryFilters.PAGE, this._PageNumber);
-    }
+    const page = pageNumber ? pageNumber : this._PageNumber
+    const dataInPage = pageSize ? pageSize : this._pageSize
+    this.QueryBuilder(QueryFilters.PAGE, page);
+    this.QueryBuilder(QueryFilters.PAGESIZE, dataInPage);
     this.getResultsFromQueryString();
   }
 
-  getAllQuestions(pageNumber?: number) {
+  getAllQuestions(pageNumber?: number,pageSize?: number) {
     this.setState({ apiCallState: APICallState.LOADING });
-    if (pageNumber) {
-      this.QueryBuilder(QueryFilters.PAGE, this.pageNumber);
-    }
-    else {
-      this.QueryBuilder(QueryFilters.PAGE, this._PageNumber);
-    }
+    const page = pageNumber ? pageNumber : this._PageNumber
+    const dataInPage = pageSize ? pageSize : this._pageSize
+    this.QueryBuilder(QueryFilters.PAGE, page);
+    this.QueryBuilder(QueryFilters.PAGESIZE, dataInPage);
     this.QueryBuilder(QueryFilters.ORDER, 'desc');
     this.QueryBuilder(QueryFilters.SORT, 'votes');
     this.getResultsFromQueryString();
   }
-  getTopQuestions(pageNumber?: number) {
+  getTopQuestions(pageNumber?: number,pageSize?: number) {
     this.setState({ apiCallState: APICallState.LOADING });
-    if (pageNumber) {
-      this.QueryBuilder(QueryFilters.PAGE, this.pageNumber);
-    }
-    else {
-      this.QueryBuilder(QueryFilters.PAGE, this._PageNumber);
-    }
+    const page = pageNumber ? pageNumber : this._PageNumber
+    const dataInPage = pageSize ? pageSize : this._pageSize
+    this.QueryBuilder(QueryFilters.PAGE, page);
+    this.QueryBuilder(QueryFilters.PAGESIZE, dataInPage);
     this.QueryBuilder(QueryFilters.ORDER, 'desc');
     this.QueryBuilder(QueryFilters.SORT, 'creation');
     this.QueryBuilder(QueryFilters.ACCEPTED, 'False');
@@ -136,9 +131,6 @@ export class RootStateService extends StateService<RootState> {
 
   private setPageSize(pageSize: number) {
     this.QueryBuilder(QueryFilters.PAGESIZE, pageSize.toString());
-  }
-  private setPageNumber(PageNumber: number) {
-    this.QueryBuilder(QueryFilters.PAGE, PageNumber.toString());
   }
 
   //Set QueryString in State with updated searchTerm

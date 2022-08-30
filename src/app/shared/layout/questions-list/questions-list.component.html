@@ -2,7 +2,7 @@
   previousLabel="Prev"
   nextLabel="Next"
   [responsive]="true"
-  (pageChange)="onPageChange($event)"
+  (pageChange)="this.rootStateService.pageNumber = ($event)"
 >
 </pagination-controls>
 <div id="mainbar">
