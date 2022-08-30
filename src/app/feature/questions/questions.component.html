@@ -2,13 +2,13 @@
   previousLabel="Prev"
   nextLabel="Next"
   [responsive]="true"
-  (pageChange)="this.rootStateService.pageNumber = $event"
+  (pageChange)="onPageChange($event)"
 >
 </pagination-controls>
 <div id="mainbar">
   <app-spinner></app-spinner>
   <!-- For simplicity Creating Component was not required with current requirement -->
-  <ng-container *ngIf="(view$ | async) === 'home'">
+  <ng-container *ngIf="(view$ | async) === 'top-questions'">
     <ng-container
       *ngTemplateOutlet="heading; context: { $implicit: 'Top Questions' }"
     ></ng-container>

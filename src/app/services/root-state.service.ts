@@ -53,7 +53,7 @@ export class RootStateService extends StateService<RootState> {
     ).subscribe(pageNumber => {
       // beacause pageNumber 1 is loaded by default
       if (pageNumber > 1) {
-        this.getSearchResults(pageNumber);
+        // this.getSearchResults(pageNumber);
       }
     });
 
@@ -74,35 +74,46 @@ export class RootStateService extends StateService<RootState> {
   private _PageNumber: number = 1;
 
   //Observables
-  rootState$: Observable<RootState> = this.select((state) => state);
   searchResponse$: Observable<SearchResponse> = this.select((state) => state.searchState.searchResponse);
-  items$: Observable<Results[]> = this.select((state) => state.searchState.searchResponse.items);
   searchTerm$: Observable<string> = this.select((state) => state.searchState.searchTerm);
   currentQuery$: Observable<URLSearchParams> = this.select((state) => state.searchState.queryString);
   pageNumber$: Observable<number> = this.select((state) => state.searchState.searchResponse.page);
   pageSize$: Observable<number> = this.select((state) => state.searchState.searchResponse.page_size);
-  apiCallState$: Observable<APICallState> = this.select((state) => state.apiCallState);
 
 
-  getSearchResults(pageNumber: number = 1) {
+  getSearchResults(pageNumber?: number) {
     this.setState({ apiCallState: APICallState.LOADING });
     this.removeAllQueryFromQueryStringExcept(QueryFilters.PAGESIZE);
     this.QueryBuilder(QueryFilters.QUERY, this._searchTerm);
-    this.QueryBuilder(QueryFilters.PAGE, pageNumber);
-    this.router.navigate(['/search']);
+    if (pageNumber) {
+      this.QueryBuilder(QueryFilters.PAGE, this.pageNumber);
+    }
+    else {
+      this.QueryBuilder(QueryFilters.PAGE, this._PageNumber);
+    }
     this.getResultsFromQueryString();
   }
 
-  getAllQuestions(pageNumber: number = 1) {
+  getAllQuestions(pageNumber?: number) {
     this.setState({ apiCallState: APICallState.LOADING });
-    this.QueryBuilder(QueryFilters.PAGE, pageNumber);
+    if (pageNumber) {
+      this.QueryBuilder(QueryFilters.PAGE, this.pageNumber);
+    }
+    else {
+      this.QueryBuilder(QueryFilters.PAGE, this._PageNumber);
+    }
     this.QueryBuilder(QueryFilters.ORDER, 'desc');
     this.QueryBuilder(QueryFilters.SORT, 'votes');
     this.getResultsFromQueryString();
   }
-  getTopQuestions(pageNumber: number = 1) {
+  getTopQuestions(pageNumber?: number) {
     this.setState({ apiCallState: APICallState.LOADING });
-    this.QueryBuilder(QueryFilters.PAGE, pageNumber);
+    if (pageNumber) {
+      this.QueryBuilder(QueryFilters.PAGE, this.pageNumber);
+    }
+    else {
+      this.QueryBuilder(QueryFilters.PAGE, this._PageNumber);
+    }
     this.QueryBuilder(QueryFilters.ORDER, 'desc');
     this.QueryBuilder(QueryFilters.SORT, 'creation');
     this.QueryBuilder(QueryFilters.ACCEPTED, 'False');
@@ -113,14 +124,17 @@ export class RootStateService extends StateService<RootState> {
   getResultsFromQueryString() {
     const queryString = this.state.searchState.queryString.toString();
     this.stackApiService.getResults(queryString)
-      .pipe(
+     /*  .pipe(
         map((response: SearchResponse) => {
           this.setSearchResponseInState(response)
-        }), first()).subscribe()
+        }), first()).subscribe() */
   }
 
   setPageSize(pageSize: number) {
     this.QueryBuilder(QueryFilters.PAGESIZE, pageSize.toString());
+  }
+  setPageNumber(PageNumber: number) {
+    this.QueryBuilder(QueryFilters.PAGE, PageNumber.toString());
   }
 
   //Set QueryString in State with updated searchTerm
