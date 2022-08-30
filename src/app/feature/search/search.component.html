@@ -5,18 +5,20 @@
 </ng-container>
 
 <ng-template #SearchTop>
-  <div style="font-size: 27px; font-weight: 500; margin-bottom: 16px"> Search Results </div>
-  <div *ngIf="searchTerm$ | async" class="caption"> Results for {{ searchTerm$ | async }}
-  </div>
-  <div class="total-result-container">
-    <div *ngIf="searchTerm$ | async" class="total-results">
-      {{ (response$ | async)?.total | number }} results
+  <div style="max-width : 728px">
+    <div style="font-size: 27px; font-weight: 500; margin-bottom: 16px"> Search Results </div>
+    <div *ngIf="searchTerm$ | async" class="caption"> Results for {{ searchTerm$ | async }}
     </div>
-    <div class="split-button-group">
-      <button type="button" class="split-button split-button-active"> Votes</button><button
-              type="button" class="split-button">Views</button><button type="button"
-              class="split-button">Newest</button><button type="button"
-              class="split-button">Oldest</button>
+    <div class="total-result-container">
+      <div *ngIf="searchTerm$ | async" class="total-results">
+        {{ (response$ | async)?.total | number }} results
+      </div>
+      <div class="split-button-group">
+        <button type="button" class="split-button split-button-active"> Votes</button><button
+                type="button" class="split-button">Views</button><button type="button"
+                class="split-button">Newest</button><button type="button"
+                class="split-button">Oldest</button>
+      </div>
     </div>
   </div>
   <app-questions-list [response$]="response$"></app-questions-list>

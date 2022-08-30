@@ -18,15 +18,15 @@ export class StackApiService {
       .get<APIResponse>(url)
       .pipe(catchError(this.processError));
   }
-//TODO : this wont work on custom error scinarios need to fix it
-  private processError(err: any) {
+  
+  private processError(err: { error: { message: string; }; status: any; message: any; }) {
     let message = '';
     if (err.error instanceof ErrorEvent) {
       message = err.error.message;
     } else {
-      message = `Error Code: ${err.status}\nMessage: ${err.message}`;
+      message = `Error: ${err.message}`;
     }
-    console.log(message);
+    // console.log(message);
     return throwError(() => {
       message;
     });

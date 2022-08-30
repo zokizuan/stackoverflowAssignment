@@ -14,6 +14,5 @@ export class QuestionsListComponent implements OnInit {
   constructor(public rootStateService: RootStateService) { }
   @Input() response$!: Observable<APIResponse>;
   ngOnInit(): void {
-    console.log(this.itemsInPage)
   }
 }

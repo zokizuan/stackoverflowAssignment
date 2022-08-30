@@ -1,20 +1,25 @@
-<pagination-controls
-  previousLabel="Prev"
-  nextLabel="Next"
-  [responsive]="true"
-  (pageChange)="this.rootStateService.pageNumber = ($event)"
->
-</pagination-controls>
-<div id="mainbar">
-  <app-spinner></app-spinner>
-  <div class="results-container">
-    <ng-container
-      *ngFor="let item of (response$ | async)?.items!
-        | paginate: {
-                itemsPerPage: itemsInPage,
-                currentPage: (response$ | async)?.page,
-                totalItems: (response$ | async)?.total }">
-      <app-question [props]="item"></app-question>
-    </ng-container>
+<div class="question-list-container">
+  <div class="question-list">
+    <app-spinner></app-spinner>
+    <div class="results-container">
+      <ng-container *ngIf="(this.rootStateService.APIStatus$ | async )=== 3">
+        <div class="error">
+          This is server side error. Please try again later.
+        </div>
+      </ng-container>
+      <ng-container *ngFor="let item of (response$ | async)?.items!
+          | paginate: {
+                  itemsPerPage: itemsInPage,
+                  currentPage: (response$ | async)?.page,
+                  totalItems: (response$ | async)?.total }">
+        <app-question [props]="item"></app-question>
+      </ng-container>
+    </div>
+  </div>
+  <div *ngIf="(response$ | async)?.has_more" class="pagination-container">
+    <pagination-controls class="my-pagination" previousLabel="Prev" nextLabel="Next"
+                         [responsive]="true"
+                         (pageChange)="this.rootStateService.pageNumber = ($event)">
+    </pagination-controls>
   </div>
 </div>

@@ -1,11 +1,10 @@
 import { QueryFilters } from '../enums/query-filters.enum';
 import { Injectable } from '@angular/core';
-import { first, map, Observable } from 'rxjs';
+import { first, map, Observable, tap, distinctUntilChanged } from 'rxjs';
 import { APICallState } from '../enums/api-call-state.enum';
 import { APIResponse } from '../models/search.model';
 import { StateService } from '../store/global.store';
 import { StackApiService } from './stack-api.service';
-import { distinctUntilChanged } from 'rxjs';
 import { Router } from '@angular/router';
 
 
@@ -78,39 +77,40 @@ export class RootStateService extends StateService<RootState> {
   currentQuery$: Observable<URLSearchParams> = this.select((state) => state.searchState.queryString);
   pageNumber$: Observable<number> = this.select((state) => state.searchState.searchResponse.page);
   pageSize$: Observable<number> = this.select((state) => state.searchState.searchResponse.page_size);
+  APIStatus$: Observable<number> = this.select((state) => state.apiCallState);
 
 
   onPageNumberChange(pageNumber: number) {
     this.QueryBuilder(QueryFilters.PAGE, pageNumber.toString());
-    this.getResultsFromQueryString()
+    this.getResultsFromQueryString();
   }
 
-  getSearchResults(pageNumber?: number,pageSize?: number) {
+  getSearchResults(pageNumber?: number, pageSize?: number) {
     this.setState({ apiCallState: APICallState.LOADING });
-    this.router.navigate(['/search'])
+    this.router.navigate(['/search']);
     this.removeAllQueryFromQueryStringExcept(QueryFilters.PAGESIZE);
     this.QueryBuilder(QueryFilters.QUERY, this._searchTerm);
-    const page = pageNumber ? pageNumber : this._PageNumber
-    const dataInPage = pageSize ? pageSize : this._pageSize
+    const page = pageNumber ? pageNumber : this._PageNumber;
+    const dataInPage = pageSize ? pageSize : this._pageSize;
     this.QueryBuilder(QueryFilters.PAGE, page);
     this.QueryBuilder(QueryFilters.PAGESIZE, dataInPage);
     this.getResultsFromQueryString();
   }
 
-  getAllQuestions(pageNumber?: number,pageSize?: number) {
+  getAllQuestions(pageNumber?: number, pageSize?: number) {
     this.setState({ apiCallState: APICallState.LOADING });
-    const page = pageNumber ? pageNumber : this._PageNumber
-    const dataInPage = pageSize ? pageSize : this._pageSize
+    const page = pageNumber ? pageNumber : this._PageNumber;
+    const dataInPage = pageSize ? pageSize : this._pageSize;
     this.QueryBuilder(QueryFilters.PAGE, page);
     this.QueryBuilder(QueryFilters.PAGESIZE, dataInPage);
     this.QueryBuilder(QueryFilters.ORDER, 'desc');
     this.QueryBuilder(QueryFilters.SORT, 'votes');
     this.getResultsFromQueryString();
   }
-  getTopQuestions(pageNumber?: number,pageSize?: number) {
+  getTopQuestions(pageNumber?: number, pageSize?: number) {
     this.setState({ apiCallState: APICallState.LOADING });
-    const page = pageNumber ? pageNumber : this._PageNumber
-    const dataInPage = pageSize ? pageSize : this._pageSize
+    const page = pageNumber ? pageNumber : this._PageNumber;
+    const dataInPage = pageSize ? pageSize : this._pageSize;
     this.QueryBuilder(QueryFilters.PAGE, page);
     this.QueryBuilder(QueryFilters.PAGESIZE, dataInPage);
     this.QueryBuilder(QueryFilters.ORDER, 'desc');
@@ -123,10 +123,9 @@ export class RootStateService extends StateService<RootState> {
   private getResultsFromQueryString() {
     const queryString = this.state.searchState.queryString.toString();
     this.stackApiService.getResults(queryString)
-      .pipe(
-        map((response: APIResponse) => {
-          this.setSearchResponseInState(response)
-        }), first()).subscribe()
+      .pipe(map((response: APIResponse) => {
+        this.setResponseInState(response)
+      }), first()).subscribe()
   }
 
   private setPageSize(pageSize: number) {
@@ -146,8 +145,8 @@ export class RootStateService extends StateService<RootState> {
     }
   }
 
-  private setSearchResponseInState(response: APIResponse) {
-    console.log(response)
+  private setResponseInState(response: APIResponse) {
+    // console.log(response)
     this.setState({
       searchState: {
         ...this.state.searchState,
@@ -174,6 +173,12 @@ export class RootStateService extends StateService<RootState> {
         ...this.state.searchState,
         searchTerm: latestSearchTerm
       }
+    });
+  }
+  public set ApiCallState(status: APICallState) {
+    this.setState({
+      ...this.state,
+      apiCallState: status
     });
   }
   public set pageSize(pageSize: number) {

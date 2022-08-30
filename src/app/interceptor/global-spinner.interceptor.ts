@@ -31,7 +31,7 @@ export class GlobalSpinnerInterceptor implements HttpInterceptor {
         },
         error: err => {
           this.spinnerService.resetSpinner();
-          console.error(err);
+          // console.error(err);
           throw err;
         },
       }));

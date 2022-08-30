@@ -1,6 +1,17 @@
-#mainbar,
-.mainbar {
-  width: 728px;
+.my-pagination ::ng-deep .ngx-pagination .current {
+  background: #f48225;
+}
+.pagination-container{
+  display: flex;
+  padding: 15px;
+  margin-bottom: 30px;
+  align-self: self-end;
+}
+.question-list-container{
+display: flex;
+flex-direction: column;
+}
+.question-list {
   padding: 0;
   float: left;
   margin: 0;
@@ -8,6 +19,12 @@
   height: 100%;
 }
 
+.error{
+  color: red;
+  padding: 24px;
+  text-align: center;
+  font-weight: 500;
+}
 .results-container{
   margin-left: -24px;
   border-top: 1px solid #e3e6e8;
