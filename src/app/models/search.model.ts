@@ -1,4 +1,4 @@
-export interface SearchResponse {
+export interface APIResponse {
   items: Results[];
   has_more: boolean;
   quota_max: number;

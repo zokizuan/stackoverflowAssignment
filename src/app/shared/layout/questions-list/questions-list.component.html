@@ -9,11 +9,11 @@
   <app-spinner></app-spinner>
   <div class="results-container">
     <ng-container
-      *ngFor="let item of (searchResponse$ | async)?.items!
+      *ngFor="let item of (response$ | async)?.items!
         | paginate: {
                 itemsPerPage: itemsInPage,
-                currentPage: (searchResponse$ | async)?.page,
-                totalItems: (searchResponse$ | async)?.total }">
+                currentPage: (response$ | async)?.page,
+                totalItems: (response$ | async)?.total }">
       <app-question [props]="item"></app-question>
     </ng-container>
   </div>

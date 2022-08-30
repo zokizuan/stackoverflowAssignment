@@ -1,9 +1,8 @@
-import { Results } from './../models/search.model';
 import { QueryFilters } from '../enums/query-filters.enum';
 import { Injectable } from '@angular/core';
 import { first, map, Observable } from 'rxjs';
 import { APICallState } from '../enums/api-call-state.enum';
-import { SearchResponse } from '../models/search.model';
+import { APIResponse } from '../models/search.model';
 import { StateService } from '../store/global.store';
 import { StackApiService } from './stack-api.service';
 import { distinctUntilChanged } from 'rxjs';
@@ -13,7 +12,7 @@ import { Router } from '@angular/router';
 export interface RootState {
   searchState: {
     searchTerm: string;
-    searchResponse: SearchResponse;
+    searchResponse: APIResponse;
     queryString: URLSearchParams;
   };
   apiCallState: APICallState;
@@ -53,7 +52,7 @@ export class RootStateService extends StateService<RootState> {
     ).subscribe(pageNumber => {
       // beacause pageNumber 1 is loaded by default
       if (pageNumber > 1) {
-        // this.getSearchResults(pageNumber);
+        this.onPageNumberChange(pageNumber);
       }
     });
 
@@ -74,12 +73,17 @@ export class RootStateService extends StateService<RootState> {
   private _PageNumber: number = 1;
 
   //Observables
-  searchResponse$: Observable<SearchResponse> = this.select((state) => state.searchState.searchResponse);
+  response$: Observable<APIResponse> = this.select((state) => state.searchState.searchResponse);
   searchTerm$: Observable<string> = this.select((state) => state.searchState.searchTerm);
   currentQuery$: Observable<URLSearchParams> = this.select((state) => state.searchState.queryString);
   pageNumber$: Observable<number> = this.select((state) => state.searchState.searchResponse.page);
   pageSize$: Observable<number> = this.select((state) => state.searchState.searchResponse.page_size);
 
+
+  onPageNumberChange(pageNumber: number) {
+    this.QueryBuilder(QueryFilters.PAGE, pageNumber.toString());
+    this.getResultsFromQueryString()
+  }
 
   getSearchResults(pageNumber?: number) {
     this.setState({ apiCallState: APICallState.LOADING });
@@ -121,28 +125,28 @@ export class RootStateService extends StateService<RootState> {
     this.getResultsFromQueryString();
   }
 
-  getResultsFromQueryString() {
+  private getResultsFromQueryString() {
     const queryString = this.state.searchState.queryString.toString();
     this.stackApiService.getResults(queryString)
-     /*  .pipe(
-        map((response: SearchResponse) => {
+      .pipe(
+        map((response: APIResponse) => {
           this.setSearchResponseInState(response)
-        }), first()).subscribe() */
+        }), first()).subscribe()
   }
 
-  setPageSize(pageSize: number) {
+  private setPageSize(pageSize: number) {
     this.QueryBuilder(QueryFilters.PAGESIZE, pageSize.toString());
   }
-  setPageNumber(PageNumber: number) {
+  private setPageNumber(PageNumber: number) {
     this.QueryBuilder(QueryFilters.PAGE, PageNumber.toString());
   }
 
   //Set QueryString in State with updated searchTerm
-  QueryBuilder(queryType: QueryFilters, value: string | number) {
+  private QueryBuilder(queryType: QueryFilters, value: string | number) {
     this.state.searchState.queryString.set(queryType, "" + value)
   }
 
-  removeAllQueryFromQueryStringExcept(queryType: QueryFilters) {
+  private removeAllQueryFromQueryStringExcept(queryType: QueryFilters) {
     for (const [key, value] of this.state.searchState.queryString.entries()) {
       if (key !== queryType) {
         this.state.searchState.queryString.delete(key)
@@ -150,7 +154,7 @@ export class RootStateService extends StateService<RootState> {
     }
   }
 
-  setSearchResponseInState(response: SearchResponse) {
+  private setSearchResponseInState(response: APIResponse) {
     console.log(response)
     this.setState({
       searchState: {

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { APIResponse } from 'src/app/models/search.model';
 import { RootStateService } from 'src/app/services/root-state.service';
 
 @Component({
@@ -7,11 +9,11 @@ import { RootStateService } from 'src/app/services/root-state.service';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
-
-  constructor(private rootStateService: RootStateService) { }
-  searchResponse$ = this.rootStateService.searchResponse$;
   searchTerm$ = this.rootStateService.searchTerm$;
+  response$!: Observable<APIResponse>
+  constructor(private rootStateService:RootStateService) { }
   ngOnInit(): void {
+    this.rootStateService.getSearchResults();
+    this.response$ = this.rootStateService.response$
   }
-
 }

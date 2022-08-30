@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { APIResponse } from 'src/app/models/search.model';
 import { RootStateService } from 'src/app/services/root-state.service';
 
 @Component({
@@ -11,26 +11,15 @@ import { RootStateService } from 'src/app/services/root-state.service';
 
 export class QuestionsListComponent implements OnInit {
   itemsInPage = 10;
-  constructor(public rootStateService: RootStateService, private route: ActivatedRoute) { }
-  searchResponse$ = this.rootStateService.searchResponse$;
-  searchTerm$ = this.rootStateService.searchTerm$;
+  constructor(public rootStateService: RootStateService) { }
+  @Input() response$!: Observable<APIResponse>;
   onPageChange(pageNumber: number) {
-/*     this.rootStateService.pageNumber = pageNumber;
-      switch (this.view) {
-        case 'all-questions':
-          this.rootStateService.getAllQuestions()   
-          break;
-        case 'top-questions':
-          this.rootStateService.getTopQuestions()
-          break;
-        default:
-          this.rootStateService.getSearchResults()
-          break;
-      } */
+    this.rootStateService.pageNumber = pageNumber;
     }
   
   ngOnInit(): void {
     //Setting the page size to 10 initially
+    console.log('setting page site')
     this.rootStateService.pageSize = this.itemsInPage;
   }
 }

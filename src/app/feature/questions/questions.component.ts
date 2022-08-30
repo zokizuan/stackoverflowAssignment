@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { APIResponse } from 'src/app/models/search.model';
+import { RootStateService } from 'src/app/services/root-state.service';
 
 @Component({
   selector: 'app-questions',
@@ -7,9 +10,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class QuestionsComponent implements OnInit {
 
-  constructor() { }
-
+  constructor(private rootStateService:RootStateService) { }
+  response$!: Observable<APIResponse>
   ngOnInit(): void {
+    this.rootStateService.getAllQuestions();
+    this.response$ = this.rootStateService.response$
   }
 
 }
