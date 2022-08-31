@@ -20,7 +20,7 @@
     </div>
     <div class="content-container">
       <h3 class="content-tilte">
-        <a href="" [innerHTML]="props.title" class="s-link"></a>
+        <a [innerHTML]="props.title" class="s-link"></a>
       </h3>
       <div class="content-excerpt" [innerHtml]="props.body | htmlToPlaintext">  </div>
       <div class="content-meta">

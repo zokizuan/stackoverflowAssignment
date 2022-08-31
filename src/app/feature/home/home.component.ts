@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
   constructor(private rootStateService:RootStateService) { }
   response$!: Observable<APIResponse>
   ngOnInit(): void {
-    this.rootStateService.getTopQuestions();
+    this.rootStateService.getAllQuestions();
     this.response$ = this.rootStateService.response$
   }
 

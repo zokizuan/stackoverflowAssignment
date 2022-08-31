@@ -14,7 +14,7 @@ export class QuestionsComponent implements OnInit {
   response$!: Observable<APIResponse>
   ngOnInit(): void {
     this.response$ = this.rootStateService.response$
-    this.rootStateService.getAllQuestions();
+    this.rootStateService.getTopQuestions();
   }
 
 }
